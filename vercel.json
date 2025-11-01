@@ -12,13 +12,7 @@
   ],
 
   "redirects": [
-    { "source": "/www", "destination": "/", "permanent": true },
-    { "source": "/resume", "destination": "/assets/Resume_SDE.pdf", "permanent": false },
-    { "source": "/resume-sde", "destination": "/assets/Resume_SDE.pdf", "permanent": false },
-    { "source": "/resume-ds", "destination": "/assets/Resume_DS.pdf", "permanent": false },
-    { "source": "/resume-pega", "destination": "/assets/Resume_Pega.pdf", "permanent": false },
-    { "source": "/favicon.ico", "destination": "/favicon.svg", "permanent": false },
-    { "source": "/favicon.png", "destination": "/favicon.svg", "permanent": false }
+    { "source": "/resume", "destination": "/assets/Resume_SDE.pdf", "permanent": false }
   ],
 
   "headers": [
