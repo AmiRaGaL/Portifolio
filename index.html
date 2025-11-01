@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deva Sai Kumar Bheesetti - Portfolio</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Deva Sai Kumar Bheesetti's Portfolio - Data Science & Automation Enthusiast">
+    <meta name="keywords" content="Data Science, Automation, Portfolio, AI, Machine Learning, Deva Sai Kumar">
+    <meta name="author" content="Deva Sai Kumar Bheesetti">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- AOS CSS for animations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Scroll Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navbar with Bootstrap -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">Deva Sai Kumar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item">
+                    <button id="theme-toggle" class="btn btn-outline-light ml-2">🌙</button>
+                </li>
+                <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="resumeDropdown" role="button" data-toggle="dropdown">
+    Resumes
+  </a>
+  <div class="dropdown-menu dropdown-menu-right">
+    <a class="dropdown-item" href="public/assets/Resume_SDE.pdf" target="_blank">SDE Resume</a>
+    <a class="dropdown-item" href="public/assets/Resume_DS.pdf" target="_blank">Data Science / AI Resume</a>
+    <a class="dropdown-item" href="public/assets/Resume_Pega.pdf" target="_blank">Pega Developer Resume</a>
+  </div>
+</li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content dynamically loaded here -->
+    <main id="main-content" class="container mt-5">
+        <div id="home" data-aos="fade-in"></div>
+        <div id="about" data-aos="fade-up"></div>
+        <div id="skills" data-aos="fade-up"></div>
+        <div id="experience" data-aos="fade-up"></div>
+        <div id="projects" data-aos="fade-up"></div>
+        <div id="contact" data-aos="fade-up"></div>
+    </main>
+
+    <!-- Back-to-Top Button -->
+    <button id="back-to-top" onclick="scrollToTop()" class="btn btn-primary" style="display: none;">
+        ↑
+    </button>
+
+    <!-- JavaScript for Bootstrap, AOS, and custom scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("W1iL21FWnvmFoP_YF"); // Replace with your actual public key
+    </script>    
+    <script src="js/loadSections.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
