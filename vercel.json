@@ -17,12 +17,8 @@
     { "source": "/resume-sde", "destination": "/assets/Resume_SDE.pdf", "permanent": false },
     { "source": "/resume-ds", "destination": "/assets/Resume_DS.pdf", "permanent": false },
     { "source": "/resume-pega", "destination": "/assets/Resume_Pega.pdf", "permanent": false },
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.devasai.dev" }],
-      "destination": "https://devasai.dev/$1",
-      "permanent": true
-    }
+    { "source": "/favicon.ico", "destination": "/favicon.svg", "permanent": false },
+    { "source": "/favicon.png", "destination": "/favicon.svg", "permanent": false }
   ],
 
   "headers": [
