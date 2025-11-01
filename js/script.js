@@ -75,3 +75,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 300);
 });
+document.addEventListener("section:loaded", async (e) => {
+  if (e.detail?.id !== "chat") return;
+
+  // Lazy-load the helper only when Chat is present
+  const { chatGroq } = await import("/js/groq.js");
+
+  const promptEl = document.getElementById("chat-prompt");
+  const answerEl = document.getElementById("chat-answer");
+  const sendBtn  = document.getElementById("chat-send");
+  const modelEl  = document.getElementById("chat-model");
+
+  if (!promptEl || !answerEl || !sendBtn) return;
+
+  sendBtn.addEventListener("click", async () => {
+    const prompt = (promptEl.value || "").trim();
+    if (!prompt) return;
+
+    sendBtn.disabled = true;
+    answerEl.textContent = "";
+
+    try {
+      await chatGroq(prompt, (t) => (answerEl.textContent += t), modelEl.value || undefined);
+    } catch (err) {
+      answerEl.textContent = `Error: ${err.message}`;
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+});

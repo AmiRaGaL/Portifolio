@@ -1,41 +1,31 @@
-async function askGroq(prompt) {
+export async function chatGroq(prompt, onToken, model) {
   const res = await fetch("/api/groq-chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      prompt,
-      model: "llama-3.1-70b-versatile", // or 8b-instant for faster
-      temperature: 0.2,
-      max_tokens: 512
-    }),
+      messages: [{ role: "user", content: prompt }],
+      stream: true,
+      ...(model ? { model } : {})
+    })
   });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || "Request failed");
-  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+  let buffer = "";
 
-  const data = await res.json();
-  return data.text;
-}
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
 
-// Example UI hook
-document.addEventListener("DOMContentLoaded", () => {
-  const askBtn = document.getElementById("ask-ai");
-  const input = document.getElementById("ai-prompt");
-  const out = document.getElementById("ai-output");
-  if (!askBtn || !input || !out) return;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
 
-  askBtn.addEventListener("click", async () => {
-    askBtn.disabled = true;
-    out.textContent = "Thinking...";
-    try {
-      const text = await askGroq(input.value.trim());
-      out.textContent = text;
-    } catch (e) {
-      out.textContent = "Error: " + e.message;
-    } finally {
-      askBtn.disabled = false;
+    for (const line of lines) {
+      if (!line.startsWith("data: ")) continue;
+      const data = line.slice(6).trim();
+      if (data === "[DONE]") return;
+      try { onToken?.(JSON.parse(data).token || ""); } catch {}
     }
-  });
-});
+  }
+}

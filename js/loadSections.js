@@ -1,24 +1,43 @@
-// List of sections and their corresponding HTML files
+// js/loadSections.js
 const sections = {
-    home: "sections/home.html",
-    about: "sections/about.html",
-    skills: "sections/skills.html",
-    experience: "sections/experience.html",
-    projects: "sections/projects.html",
-    contact: "sections/contact.html"
+  home: "sections/home.html",
+  about: "sections/about.html",
+  skills: "sections/skills.html",
+  experience: "sections/experience.html",
+  projects: "sections/projects.html",
+  contact: "sections/contact.html",
+  chat: "sections/chat.html" 
 };
 
-// Function to load sections into the page
-function loadSections() {
-    for (let section in sections) {
-        fetch(sections[section])
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById(section).innerHTML = data;
-            })
-            .catch(error => console.error(`Error loading ${section}:`, error));
-    }
+function mountFor(id) {
+  let el = document.getElementById(id);
+  if (!el) {
+    // Create a container on the fly if missing to avoid null errors
+    const parent = document.getElementById("main-content") || document.body;
+    el = document.createElement("div");
+    el.id = id;
+    el.setAttribute("data-aos", id === "home" ? "fade-in" : "fade-up");
+    parent.appendChild(el);
+  }
+  return el;
 }
 
-// Load sections when the DOM is fully loaded
+function loadSections() {
+  for (const [id, url] of Object.entries(sections)) {
+    fetch(url)
+      .then((r) => r.text())
+      .then((html) => {
+        const mount = mountFor(id);
+        mount.innerHTML = html;
+
+        // Notify listeners (e.g., to lazy-init chat)
+        document.dispatchEvent(new CustomEvent("section:loaded", { detail: { id } }));
+
+        // Refresh AOS so newly injected nodes animate
+        if (window.AOS?.refresh) AOS.refresh();
+      })
+      .catch((err) => console.error(`Error loading ${id}:`, err));
+  }
+}
+
 document.addEventListener("DOMContentLoaded", loadSections);
