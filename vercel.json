@@ -3,8 +3,13 @@
   "trailingSlash": false,
 
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/home", "destination": "/sections/home.html" },
+    { "source": "/about", "destination": "/sections/about.html" },
+    { "source": "/skills", "destination": "/sections/skills.html" },
+    { "source": "/experience", "destination": "/sections/experience.html" },
+    { "source": "/projects", "destination": "/sections/projects.html" },
+    { "source": "/contact", "destination": "/sections/contact.html" }
   ],
 
   "redirects": [
@@ -13,13 +18,7 @@
 
   "headers": [
     {
-      "source": "/(css|js|images)/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
-    {
-      "source": "/assets/(.*)",
+      "source": "/(css|js|images|assets)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
