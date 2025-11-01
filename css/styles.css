@@ -2,24 +2,32 @@
    Base Theme Variables
 ============================= */
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --surface-color: #ffffff;
-  --border-color: #e5e7eb;
+  --primary-color: #9b6b43;         /* warm brown bronze */
+  --secondary-color: #c48c56;       /* muted amber */
+  --background-color: #f6f0e8;      /* ivory beige background */
+  --text-color: #2e2a25;            /* deep brown-gray text */
+  --muted-color: #6d645c;           /* subtle muted text */
+  --surface-color: #fffaf5;         /* soft card surface */
+  --border-color: #ded5c8;          /* light ivory border */
+  --hero-start: #e8dfd2;
+  --hero-end: #d7ceb9;
+  --shadow: 0 8px 24px rgba(0,0,0,.12);
 }
 
 /* =============================
    Dark Theme Variables
 ============================= */
 body.dark-theme {
-  --primary-color: #2ecc71;
-  --secondary-color: #3498db;
-  --background-color: #121212;
-  --text-color: #f1f1f1;
-  --surface-color: #1e1e1e;
-  --border-color: #2a2a2a;
+  --primary-color: #a6785a;         /* bronze accent for dark */
+  --secondary-color: #e0b37a;       /* golden secondary */
+  --background-color: #1c1a17;      /* soft charcoal brown */
+  --text-color: #f2ede6;            /* off-white text */
+  --muted-color: #a39a8d;           /* desaturated warm gray */
+  --surface-color: #27241f;         /* card surface */
+  --border-color: #3a352f;          /* darker border */
+  --hero-start: #1a1916;
+  --hero-end: #2a2925;
+  --shadow: 0 8px 24px rgba(0,0,0,.6);
 }
 
 /* =============================
@@ -30,16 +38,22 @@ html, body {
   padding: 0;
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   scroll-behavior: smooth;
+  transition: background-color .4s ease, color .3s ease;
 }
+
+/* Links */
+a { color: var(--primary-color); text-decoration: none; }
+a:hover { color: var(--secondary-color); }
 
 /* =============================
    Navbar
 ============================= */
 .navbar {
   background-color: var(--primary-color) !important;
-  transition: background-color 0.3s ease;
+  transition: background-color .3s ease;
+  box-shadow: var(--shadow);
 }
 
 .navbar .navbar-brand,
@@ -53,55 +67,90 @@ html, body {
 }
 
 /* =============================
-   Hero Section
+   Hero Section (Home)
 ============================= */
 #home.hero {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: #fff;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+  background: linear-gradient(135deg, var(--hero-start) 0%, var(--hero-end) 100%);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  padding: 2rem 1rem;
+  transition: background .5s ease, color .3s ease;
 }
 
-#home h1 {
-  font-size: 3rem;
+#home.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
   font-weight: 700;
+  margin-bottom: .75rem;
+  color: var(--text-color);
 }
 
-#home p {
-  font-size: 1.25rem;
-  margin-top: 10px;
+#home.hero p {
+  font-size: 1.15rem;
+  max-width: 700px;
+  margin: .5rem auto 1.5rem;
+  line-height: 1.6;
+  color: var(--muted-color);
+}
+
+#home.hero .avatar {
+  width: 520px;
+  height: 520px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+  background-color: #d9cdb7;
+  border: 2px solid rgba(0,0,0,.05);
+  filter: contrast(.95) brightness(1.03) saturate(1.05);
+  mix-blend-mode: multiply;
+  box-shadow: var(--shadow);
+  transition: transform .25s ease;
+}
+#home.hero .avatar:hover { transform: scale(1.03); }
+body.dark-theme #home.hero .avatar {
+  background-color: #1f1e1a;
+  border-color: rgba(255,255,255,.1);
+  mix-blend-mode: normal;
+  filter: brightness(.9) contrast(1.1);
 }
 
 /* =============================
-   Section Styling
+   Sections
 ============================= */
 section {
   padding: 80px 0;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color .3s, color .3s;
 }
 
 .bg-light {
   background-color: var(--surface-color) !important;
 }
 
+h2.section-title {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
 /* =============================
-   Cards and Containers
+   Cards
 ============================= */
 .card {
   background-color: var(--surface-color);
   color: var(--text-color);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
-  transition: transform 0.3s, background-color 0.3s;
+  border-radius: 12px;
+  transition: transform .25s, background-color .3s, color .3s;
+  box-shadow: none;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+.text-muted { color: var(--muted-color) !important; }
 
 /* =============================
    Buttons
@@ -111,9 +160,8 @@ section {
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
   color: #fff !important;
-  transition: all 0.3s ease;
+  transition: all .2s ease;
 }
-
 .btn-primary:hover {
   background-color: var(--secondary-color) !important;
   border-color: var(--secondary-color) !important;
@@ -123,23 +171,27 @@ section {
   color: var(--text-color) !important;
   border-color: var(--text-color) !important;
 }
-
 .btn-outline-light:hover {
   background-color: var(--text-color) !important;
   color: var(--background-color) !important;
 }
 
 /* =============================
-   Text and Headings
+   Forms
 ============================= */
-h2.section-title {
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 30px;
+input, textarea, select {
+  background: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: .7rem .9rem;
+  border-radius: 10px;
+  transition: border-color .2s, background .2s, color .2s;
 }
-
-.text-primary {
-  color: var(--primary-color) !important;
+input::placeholder, textarea::placeholder { color: var(--muted-color); }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
 
 /* =============================
@@ -147,8 +199,7 @@ h2.section-title {
 ============================= */
 #scroll-progress {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 0%;
   height: 5px;
   background: var(--secondary-color);
@@ -171,12 +222,13 @@ h2.section-title {
   height: 50px;
   font-size: 22px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color .3s ease, transform .15s ease;
   z-index: 1000;
+  box-shadow: var(--shadow);
 }
-
 #backToTop:hover {
   background-color: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
 /* =============================
@@ -190,21 +242,110 @@ footer {
 }
 
 /* =============================
-   Animations (AOS)
-============================= */
-[data-aos] {
-  transition-property: transform, opacity !important;
-}
-
-/* =============================
-   Responsive Adjustments
+   Responsive
 ============================= */
 @media (max-width: 768px) {
-  #home h1 {
-    font-size: 2.2rem;
-  }
+  #home.hero h1 { font-size: 2.25rem; }
+  #home.hero p { font-size: 1rem; }
+  #home.hero .avatar { width: 180px; height: 180px; }
+}
+/* ===== Bootstrap primary/link overrides (kill the blue) ===== */
 
-  #home p {
-    font-size: 1rem;
-  }
+/* Map Bootstrap tokens to your warm palette */
+:root {
+  /* Bootstrap 5 variables */
+  --bs-primary: #9b6b43;
+  --bs-primary-rgb: 155,107,67;
+  --bs-link-color: #9b6b43;
+  --bs-link-hover-color: #c48c56;
+  --bs-success: #c48c56; /* optional if success looked greenish-blue */
+}
+
+/* Links */
+a,
+.link-primary,
+a.text-primary,
+.text-primary,
+.btn-link {
+  color: var(--bs-link-color) !important;
+}
+a:hover,
+.link-primary:hover,
+a.text-primary:hover,
+.text-primary:hover,
+.btn-link:hover {
+  color: var(--bs-link-hover-color) !important;
+}
+
+/* Backgrounds / borders / badges using primary */
+.bg-primary,
+.border-primary,
+.badge.bg-primary,
+.list-group-item.active,
+.progress-bar.bg-primary {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-primary:focus,
+.btn-outline-primary:focus {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+.btn-primary:hover {
+  background-color: #c48c56 !important;   /* secondary */
+  border-color: #c48c56 !important;
+}
+.btn-outline-primary {
+  color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  background: transparent !important;
+}
+.btn-outline-primary:hover {
+  background-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+
+/* Alerts, pagination, nav-pills, etc. */
+.alert-primary {
+  background-color: color-mix(in srgb, var(--bs-primary) 12%, transparent);
+  border-color: color-mix(in srgb, var(--bs-primary) 35%, transparent);
+  color: var(--bs-primary);
+}
+
+.page-link,
+.pagination .active .page-link,
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  color: #fff !important;
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+/* Forms focus ring (blue glow) */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus,
+.btn:focus {
+  border-color: var(--bs-primary) !important;
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25) !important;
+}
+
+/* Table, list group active states */
+.table .table-primary,
+.list-group-item.active {
+  background-color: color-mix(in srgb, var(--bs-primary) 12%, #fff);
+  border-color: color-mix(in srgb, var(--bs-primary) 35%, #fff);
+}
+
+/* Dark theme mapping */
+body.dark-theme {
+  --bs-primary: #a6785a;
+  --bs-primary-rgb: 166,120,90;
+  --bs-link-color: #a6785a;
+  --bs-link-hover-color: #e0b37a;
 }
