@@ -29,30 +29,40 @@ toggleButton.addEventListener("click", () => {
 });
 
 function initializeEmailForm() {
-    const form = document.getElementById("form");
-    if (!form) return;
+  const form = document.getElementById("form");
+  if (!form) return;
 
-    const btn = document.getElementById("button");
-    const defaultTimeInput = document.getElementById("default-time");
+  const btn = document.getElementById("button");
+  const defaultTimeInput = document.getElementById("default-time");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        btn.value = "Sending...";
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    btn.value = "Sending...";
 
-        // Set current time
-        defaultTimeInput.value = new Date().toLocaleString();
+    // Set current time for context
+    defaultTimeInput.value = new Date().toISOString();
 
-        emailjs.sendForm("default_service", "template_nt4twcq", this)
-            .then(() => {
-                btn.value = "Send Email";
-                alert("Email sent successfully!");
-                form.reset();
-            }, (err) => {
-                btn.value = "Send Email";
-                alert("Failed to send email:\n" + JSON.stringify(err));
-                console.error(err);
-            });
-    });
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      alert("Email sent successfully!");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send email. Please try again later.");
+    } finally {
+      btn.value = "Send Email";
+    }
+  });
 }
 
 // Run after dynamic sections are loaded
