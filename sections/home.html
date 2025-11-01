@@ -1,49 +1,11 @@
 <!-- sections/home.html -->
-<section id="home" class="d-flex align-items-center justify-content-center text-center hero"
-  style="min-height: 100vh; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white;"
-  data-aos="fade-in">
-  <div class="container" data-aos="zoom-in" data-aos-delay="200">
-    
-    <img src="images/profile.jpg" alt="Profile Picture" 
-         class="rounded-circle mb-4 shadow-lg border border-light" 
-         width="150" height="150">
-
-    <h1 class="display-4 font-weight-bold mb-2">Deva Sai Kumar Bheesetti</h1>
-    <h4 id="animated-text" class="text-info mb-3"></h4>
-    <p class="lead mb-4">
-      AI Engineer • Full-Stack Developer • Automation Specialist<br>
-      Turning data and code into scalable, intelligent systems.
-    </p>
-
-    <div class="mt-4">
-      <a href="#projects" class="btn btn-outline-light btn-lg mx-2">Explore Projects</a>
-      <a href="/assets/Resume_SDE.pdf" target="_blank" class="btn btn-primary btn-lg mx-2">View Resume</a>
-      <a href="https://github.com/AmiRaGaL" target="_blank" class="btn btn-outline-info btn-lg mx-2">GitHub</a>
-      <a href="https://www.linkedin.com/in/deva-sai-kumar-bheesetti-34380812b/" target="_blank" class="btn btn-outline-light btn-lg mx-2">LinkedIn</a>
+<section id="home" class="d-flex align-items-center text-center hero"
+    style="height: 100vh;"
+    data-aos="fade-in">
+    <div class="container">
+        <h1 class="display-4 font-weight-bold">Deva Sai Kumar Bheesetti</h1>
+        <p class="lead">AI & Automation Engineer | LLM Researcher | Full-Stack Problem Solver</p>
+        <p>Specializing in intelligent systems, inference pipelines, and real-world machine learning deployments.</p>
+        <a href="#about" class="btn btn-light btn-lg mt-3">Learn More</a>
     </div>
-
-  </div>
-
-  <!-- Floating Scroll Hint -->
-  <div class="scroll-indicator text-center position-absolute w-100" style="bottom: 30px;">
-    <small class="text-light">Scroll to explore ↓</small>
-  </div>
 </section>
-
-<script>
-  // Animated typing effect for roles
-  const roles = [
-    "AI Engineer 💡",
-    "Machine Learning Developer 🤖",
-    "Full-Stack Software Engineer 💻",
-    "Data & Automation Specialist ⚙️"
-  ];
-  let idx = 0;
-  const textEl = document.getElementById("animated-text");
-  function changeText() {
-    textEl.textContent = roles[idx];
-    idx = (idx + 1) % roles.length;
-    setTimeout(changeText, 2000);
-  }
-  document.addEventListener("DOMContentLoaded", changeText);
-</script>
