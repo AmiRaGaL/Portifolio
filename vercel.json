@@ -1,8 +1,51 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+
   "rewrites": [
+    { "source": "/home", "destination": "/sections/home.html" },
+    { "source": "/about", "destination": "/sections/about.html" },
+    { "source": "/skills", "destination": "/sections/skills.html" },
+    { "source": "/experience", "destination": "/sections/experience.html" },
+    { "source": "/projects", "destination": "/sections/projects.html" },
+    { "source": "/contact", "destination": "/sections/contact.html" }
+  ],
+
+  "redirects": [
+    { "source": "/www", "destination": "/", "permanent": true },
+    { "source": "/resume", "destination": "/assets/Resume_SDE.pdf", "permanent": false },
+    { "source": "/resume-sde", "destination": "/assets/Resume_SDE.pdf", "permanent": false },
+    { "source": "/resume-ds", "destination": "/assets/Resume_DS.pdf", "permanent": false },
+    { "source": "/resume-pega", "destination": "/assets/Resume_Pega.pdf", "permanent": false },
     {
       "source": "/(.*)",
-      "destination": "/"
+      "has": [{ "type": "host", "value": "www.devasai.dev" }],
+      "destination": "https://devasai.dev/$1",
+      "permanent": true
+    }
+  ],
+
+  "headers": [
+    {
+      "source": "/(css|js|images)/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
     }
   ]
 }
