@@ -3,12 +3,7 @@
   "trailingSlash": false,
 
   "rewrites": [
-    { "source": "/home", "destination": "/sections/home.html" },
-    { "source": "/about", "destination": "/sections/about.html" },
-    { "source": "/skills", "destination": "/sections/skills.html" },
-    { "source": "/experience", "destination": "/sections/experience.html" },
-    { "source": "/projects", "destination": "/sections/projects.html" },
-    { "source": "/contact", "destination": "/sections/contact.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
 
   "redirects": [
