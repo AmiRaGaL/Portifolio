@@ -1,107 +1,75 @@
-// Back-to-Top Button Functionality
-window.onscroll = function () {
-    const backToTopButton = document.getElementById("back-to-top");
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        backToTopButton.style.display = "block";
-    } else {
-        backToTopButton.style.display = "none";
-    }
+// js/script.js
+import { chatGroq } from "/js/groq.js";
 
-    // Update Scroll Progress Indicator
-    const progressBar = document.getElementById("progress-bar");
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrollPercentage = (scrollTop / scrollHeight) * 100;
-    progressBar.style.width = scrollPercentage + "%";
-};
-
-// Smooth Scroll to Top
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+async function getResumeContext() {
+  try {
+    const kb = await fetch("/assets/resume_qa.json", { cache: "no-store" }).then(r => r.json());
+    const kbText = [
+      `NAME: ${kb.profile.name}`,
+      `SUMMARY: ${kb.profile.summary}`,
+      `HIGHLIGHTS: ${kb.highlights.join(" | ")}`,
+      `TOP QA: ${kb.qa.slice(0, 8).map(x => `Q:${x.q} A:${x.a}`).join(" | ")}`
+    ].join("\n");
+    return kbText;
+  } catch {
+    return "";
+  }
 }
 
-// Dark/Light Mode Toggle
-const toggleButton = document.getElementById("theme-toggle");
+async function askResumeAI(userPrompt, onToken, model) {
+  const ctx = await getResumeContext();
+  const SYSTEM_PROMPT = `You are ResumeAI for Deva Sai Kumar Bheesetti.
+Answer strictly with the provided context. If you don't know, say so and suggest
+asking about skills, projects, experience, education, or certifications.
+Keep answers concise (1–4 sentences). Preserve exact metrics.
 
-toggleButton.addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme");
-    toggleButton.textContent = document.body.classList.contains("dark-theme") ? "☀️" : "🌙";
-});
+--- CONTEXT START ---
+${ctx}
+--- CONTEXT END ---`;
 
-function initializeEmailForm() {
-  const form = document.getElementById("form");
-  if (!form) return;
+  const messages = [
+    { role: "system", content: SYSTEM_PROMPT },
+    { role: "user", content: userPrompt }
+  ];
 
-  const btn = document.getElementById("button");
-  const defaultTimeInput = document.getElementById("default-time");
-
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    btn.value = "Sending...";
-
-    // Set current time for context
-    defaultTimeInput.value = new Date().toISOString();
-
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-
-      alert("Email sent successfully!");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to send email. Please try again later.");
-    } finally {
-      btn.value = "Send Email";
-    }
-  });
+  return chatGroq(JSON.stringify(messages), onToken, model);
 }
 
-// Run after dynamic sections are loaded
 document.addEventListener("DOMContentLoaded", () => {
-    // Wait until the contact section is inserted
-    const checkInterval = setInterval(() => {
-        if (document.getElementById("form")) {
-            initializeEmailForm();
-            clearInterval(checkInterval);
-        }
-    }, 300);
-});
-document.addEventListener("section:loaded", async (e) => {
-  if (e.detail?.id !== "chat") return;
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("prompt");
+  const output = document.getElementById("answer");
+  const modelSel = document.getElementById("model");
+  const clearBtn = document.getElementById("clear-chat");
 
-  // Lazy-load the helper only when Chat is present
-  const { chatGroq } = await import("/js/groq.js");
+  if (!form || !input || !output) return;
 
-  const promptEl = document.getElementById("chat-prompt");
-  const answerEl = document.getElementById("chat-answer");
-  const sendBtn  = document.getElementById("chat-send");
-  const modelEl  = document.getElementById("chat-model");
-
-  if (!promptEl || !answerEl || !sendBtn) return;
-
-  sendBtn.addEventListener("click", async () => {
-    const prompt = (promptEl.value || "").trim();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const prompt = input.value.trim();
     if (!prompt) return;
 
-    sendBtn.disabled = true;
-    answerEl.textContent = "";
+    output.textContent = "";
+    form.querySelector("button[type=submit]").disabled = true;
 
     try {
-      await chatGroq(prompt, (t) => (answerEl.textContent += t), modelEl.value || undefined);
+      await askResumeAI(
+        prompt,
+        (t) => (output.textContent += t),
+        modelSel?.value
+      );
     } catch (err) {
-      answerEl.textContent = `Error: ${err.message}`;
+      output.textContent = `Error: ${err.message}`;
     } finally {
-      sendBtn.disabled = false;
+      form.querySelector("button[type=submit]").disabled = false;
     }
   });
-});
 
+  if (clearBtn && output) {
+    clearBtn.addEventListener("click", () => {
+      output.textContent = "";
+      input.value = "";
+      input.focus();
+    });
+  }
+});

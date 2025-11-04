@@ -1,31 +1,30 @@
-export async function chatGroq(prompt, onToken, model) {
+// js/groq.js
+export async function chatGroq(messagesOrPrompt, onToken, model) {
+  const looksLikeMessages =
+    typeof messagesOrPrompt === "string" &&
+    messagesOrPrompt.trim().startsWith("[");
+
+  const body = looksLikeMessages
+    ? { messages: JSON.parse(messagesOrPrompt) }
+    : { messages: [{ role: "user", content: String(messagesOrPrompt ?? "").trim() }] };
+
   const res = await fetch("/api/groq-chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      messages: [{ role: "user", content: prompt }],
-      stream: true,
-      ...(model ? { model } : {})
-    })
+    body: JSON.stringify({ ...body, stream: true, ...(model ? { model } : {}) })
   });
 
+  if (!res.ok) {
+    throw new Error(`Groq chat failed: ${res.status} ${res.statusText}`);
+  }
+
   const reader = res.body.getReader();
-  const decoder = new TextDecoder("utf-8");
-  let buffer = "";
+  const decoder = new TextDecoder();
 
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split("\n");
-    buffer = lines.pop() || "";
-
-    for (const line of lines) {
-      if (!line.startsWith("data: ")) continue;
-      const data = line.slice(6).trim();
-      if (data === "[DONE]") return;
-      try { onToken?.(JSON.parse(data).token || ""); } catch {}
-    }
+    const chunk = decoder.decode(value, { stream: true });
+    if (onToken) onToken(chunk);
   }
 }
