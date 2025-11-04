@@ -1,7 +1,7 @@
 // api/groq-chat.js
 import Groq from "groq-sdk";
 
-export const config = { runtime: "nodejs18.x" }; // ⬅️ switch off Edge
+export const config = { runtime: "nodejs" }; 
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -16,8 +16,16 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Vercel Node API routes parse JSON for you when Content-Type is application/json
-    const { messages = [], stream = true, model } = req.body || {};
+    // Parse incoming body
+    let body = {};
+    try {
+      body = req.body || {};
+      if (typeof body === "string") body = JSON.parse(body);
+    } catch (e) {
+      console.error("Body parse error:", e);
+    }
+
+    const { messages = [], stream = true, model } = body;
 
     const safeMessages =
       Array.isArray(messages) && messages.length
@@ -33,16 +41,16 @@ export default async function handler(req, res) {
 
     const groq = new Groq({ apiKey });
 
+    // Stream response
     if (stream) {
-      // Stream tokens to client
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.setHeader("Cache-Control", "no-cache");
+
       const completion = await groq.chat.completions.create({
         model: model || "llama-3.1-8b-instant",
         messages: safeMessages,
         stream: true,
       });
-
-      res.setHeader("Content-Type", "text/plain; charset=utf-8");
-      res.setHeader("Cache-Control", "no-cache");
 
       for await (const part of completion) {
         const token = part?.choices?.[0]?.delta?.content ?? "";
@@ -52,7 +60,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Non-streaming fallback (rarely used by our client)
+    // Non-stream fallback
     const completion = await groq.chat.completions.create({
       model: model || "llama-3.1-8b-instant",
       messages: safeMessages,
