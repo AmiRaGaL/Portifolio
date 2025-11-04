@@ -25,12 +25,24 @@ export default async function handler(req, res) {
       }
     };
 
+    const token =
+      process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
+      process.env.BLOB_READ_WRITE_TOKEN ||
+      process.env.BLOB_RW_TOKEN;
+
+    if (!token) {
+      // No token configured: just log to server logs and succeed.
+      console.log("CHAT LOG (console only):", record);
+      return res.status(200).send("ok (console only)");
+    }
+
     const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const key = `resume-ai/logs/${date}/${record.sessionId}/${Date.now()}.jsonl`;
 
     await put(key, JSON.stringify(record) + "\n", {
       access: "private",
-      contentType: "application/json"
+      contentType: "application/json",
+      token
     });
 
     res.status(200).send("ok");

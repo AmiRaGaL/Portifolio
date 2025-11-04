@@ -1,10 +1,14 @@
 // js/script.js
 import { chatGroq } from "/js/groq.js";
 
-/* Debug helpers */
+/* ---------- Debug UI ---------- */
 function log(...a){ console.debug("[ResumeAI]", ...a); }
 function showError(msg){
   let box = document.getElementById("ai-error-box");
+  if (!msg) {
+    if (box && box.parentNode) box.parentNode.removeChild(box);
+    return;
+  }
   if (!box) {
     box = document.createElement("div");
     box.id = "ai-error-box";
@@ -12,10 +16,10 @@ function showError(msg){
     const out = document.getElementById("answer") || document.body;
     out.parentNode.insertBefore(box, out);
   }
-  box.textContent = msg || "";
+  box.textContent = msg;
 }
 
-/* Retrieval */
+/* ---------- Retrieval ---------- */
 function score(q, qa){
   const terms = new Set(String(q).toLowerCase().split(/\W+/).filter(Boolean));
   return qa.map(x=>{
@@ -42,7 +46,7 @@ async function getResumeContext(query){
   }
 }
 
-/* Chat core */
+/* ---------- Chat core ---------- */
 async function askResumeAI(userPrompt, onToken, model){
   const ctx = await getResumeContext(userPrompt);
   const SYSTEM = `You are ResumeAI for Deva Sai Kumar Bheesetti.
@@ -61,12 +65,13 @@ ${ctx}
   return chatGroq(JSON.stringify(messages), onToken, model);
 }
 
-/* Robust binding */
+/* ---------- Bind & handlers ---------- */
 let bound = false;
 
 function handleSubmit(e, root){
   e?.preventDefault?.();
   e?.stopPropagation?.();
+
   const form    = root.querySelector("#chat-form");
   const input   = root.querySelector("#prompt");
   const output  = root.querySelector("#answer");
@@ -77,7 +82,7 @@ function handleSubmit(e, root){
   const prompt = input.value.trim();
   if(!prompt) return;
 
-  showError("");
+  showError(""); // hide error box
   output.textContent = "";
   if(submitBtn) submitBtn.disabled = true;
 
@@ -92,6 +97,7 @@ function handleSubmit(e, root){
 
   askResumeAI(prompt, (t)=>output.textContent += t, effectiveModel)
     .then(()=>{
+      // fire-and-forget log (ok if fails)
       fetch("/api/save-log", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -108,7 +114,9 @@ function handleSubmit(e, root){
       showError(`Chat error: ${err.message}`);
       output.textContent = `Error: ${err.message}`;
     })
-    .finally(()=>{ if(submitBtn) submitBtn.disabled=false; });
+    .finally(()=>{
+      if(submitBtn) submitBtn.disabled=false;
+    });
 }
 
 function bindChatOnce(root=document){
@@ -117,6 +125,7 @@ function bindChatOnce(root=document){
   const input   = root.querySelector("#prompt");
   const output  = root.querySelector("#answer");
   const sendBtn = root.querySelector("#send-btn");
+  const clearBtn= root.querySelector("#clear-chat");
   if(!form||!input||!output){ log("Chat nodes missing; wait…"); return; }
 
   bound = true;
@@ -129,10 +138,15 @@ function bindChatOnce(root=document){
       handleSubmit(e, root);
     }, true);
   }
-
-  fetch("/api/groq-chat", { method:"GET" })
-    .then(r=>log("Ping /api/groq-chat:", r.status))
-    .catch(()=>showError("Cannot reach /api/groq-chat (GET)"));
+  if(clearBtn){
+    clearBtn.addEventListener("click", (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      showError("");            // hide red bar
+      output.textContent = "";  // clear answer
+      input.value = "";         // clear prompt
+      input.focus();
+    }, true);
+  }
 
   log("Chat ready.");
 }
