@@ -18,7 +18,14 @@ export default async function handler(req, res) {
     const useModel = (model && model !== "default") ? model : "llama-3.1-8b-instant";
     const safeMessages = Array.isArray(messages) && messages.length
       ? messages
-      : [{ role: "system", content: "Be concise (1–4 sentences)." }, { role: "user", content: "Hello!" }];
+      : [
+          {
+            role: "system",
+            content:
+              "You are Deva Sai Kumar Bheesetti's AI assistant for his portfolio visitors. Speak as the assistant ('I'), refer to Deva by name, use only provided context, be concise (1–4 sentences), and preserve exact metrics. Avoid speaking as if you are Deva.",
+          },
+          { role: "user", content: "Hello" }
+        ];
 
     if (stream) {
       res.setHeader("Content-Type", "text/plain; charset=utf-8");

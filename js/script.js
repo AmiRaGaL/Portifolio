@@ -49,14 +49,15 @@ async function getResumeContext(query){
 /* ---------- Chat core ---------- */
 async function askResumeAI(userPrompt, onToken, model){
   const ctx = await getResumeContext(userPrompt);
-  const SYSTEM = `You are ResumeAI for Deva Sai Kumar Bheesetti.
-Answer strictly with the provided context. If you don't know, say so and suggest
-asking about skills, projects, experience, education, or certifications.
-Keep answers concise (1–4 sentences). Preserve exact metrics.
+  const SYSTEM = `You are Deva Sai Kumar Bheesetti's AI assistant for visitors of his portfolio.
+Speak as the assistant ("I") and refer to Deva by name ("Deva").
+Answer using ONLY the provided context. If something isn't in the context, say you don't have that detail and suggest asking about skills, projects, experience, education, or certifications.
+Be concise (1–4 sentences). Preserve exact metrics and titles. Avoid first-person statements that sound like Deva himself.
 
 --- CONTEXT START ---
 ${ctx}
 --- CONTEXT END ---`;
+
   const messages = [
     { role:"system", content:SYSTEM },
     { role:"user", content:userPrompt }
@@ -86,18 +87,16 @@ function handleSubmit(e, root){
   output.textContent = "";
   if(submitBtn) submitBtn.disabled = true;
 
-  // normalize model (avoid sending "default")
   const selected = modelEl?.value;
   const effectiveModel = (selected && selected !== "default") ? selected : undefined;
 
-  // stable per-tab session id for logging
+  // stable per-tab session id
   const sidKey="resumeAI_sessionId";
   let sessionId = localStorage.getItem(sidKey) || (crypto.randomUUID?.() || String(Date.now()));
   localStorage.setItem(sidKey, sessionId);
 
   askResumeAI(prompt, (t)=>output.textContent += t, effectiveModel)
     .then(()=>{
-      // fire-and-forget log (ok if fails)
       fetch("/api/save-log", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -114,9 +113,7 @@ function handleSubmit(e, root){
       showError(`Chat error: ${err.message}`);
       output.textContent = `Error: ${err.message}`;
     })
-    .finally(()=>{
-      if(submitBtn) submitBtn.disabled=false;
-    });
+    .finally(()=>{ if(submitBtn) submitBtn.disabled=false; });
 }
 
 function bindChatOnce(root=document){
@@ -138,24 +135,34 @@ function bindChatOnce(root=document){
       handleSubmit(e, root);
     }, true);
   }
+
+  // ✨ Ctrl/Cmd + Enter shortcut
+  input.addEventListener("keydown", (e) => {
+    const isEnter = e.key === "Enter";
+    const modifier = e.ctrlKey || e.metaKey;
+    if (isEnter && modifier) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSubmit(e, root);
+    }
+  });
+
   if(clearBtn){
     clearBtn.addEventListener("click", (e)=>{
       e.preventDefault(); e.stopPropagation();
-      showError("");            // hide red bar
-      output.textContent = "";  // clear answer
-      input.value = "";         // clear prompt
+      showError("");
+      output.textContent = "";
+      input.value = "";
       input.focus();
     }, true);
   }
 
-  log("Chat ready.");
+  log("Chat ready. (Ctrl+Enter to send)");
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
   bindChatOnce(document);
-
   const mo = new MutationObserver(()=>{ if(!bound) bindChatOnce(document); });
   mo.observe(document.documentElement, { childList:true, subtree:true });
-
   window.addEventListener("sections:loaded", ()=>{ if(!bound) bindChatOnce(document); });
 });
