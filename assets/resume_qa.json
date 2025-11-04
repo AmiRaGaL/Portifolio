@@ -1,0 +1,153 @@
+{
+  "profile": {
+    "name": "Deva Sai Kumar Bheesetti",
+    "email": "devasai1259@gmail.com",
+    "phone": "+1 (978) 942-1632",
+    "location": "Lowell, MA",
+    "summary": "Full‑stack software engineer & AI/ML engineer with ~5 years combined experience (3 industry + 2 research). Strong in Python/JS, FastAPI, AWS, Docker/K8s, LLMs (Hugging Face, Longformer, LLaMA), and Pega Decisioning (CSSA, CPDC). MS CS at UMass Lowell (GPA 3.94).",
+    "top_skills": [
+      "Python",
+      "JavaScript",
+      "FastAPI",
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "PyTorch",
+      "Hugging Face",
+      "LangChain",
+      "Tableau/Power BI",
+      "PostgreSQL/MySQL",
+      "Airflow",
+      "Kafka",
+      "Pega Decisioning, CDH, Next-Best-Action",
+      "REST APIs",
+      "CI/CD (GitHub Actions, Jenkins)"
+    ],
+    "education": [
+      {
+        "degree": "MS Computer Science",
+        "school": "UMass Lowell",
+        "years": "Aug 2023 – Aug 2025",
+        "gpa": "3.94"
+      },
+      {
+        "degree": "BTech ECE",
+        "school": "K L University",
+        "years": "2016 – 2020",
+        "gpa": "3.52"
+      }
+    ],
+    "certs": [
+      "CSSA",
+      "CPDC",
+      "IBM Data Science Professional",
+      "Google IT Automation with Python",
+      "Applied AI (Hugging Face)"
+    ]
+  },
+  "qa": [
+    {
+      "q": "What roles are you targeting?",
+      "a": "AI/ML Engineer, Data Scientist, and Full‑Stack/SDE roles building LLM features, APIs, and analytics systems."
+    },
+    {
+      "q": "Give a one‑line summary of yourself.",
+      "a": "Full‑stack & AI engineer (MS CS, GPA 3.94) with 3 yrs industry + 2 yrs research; I build reliable APIs, LLM pipelines, and data automations."
+    },
+    {
+      "q": "Top programming languages?",
+      "a": "Python, JavaScript/TypeScript, SQL, Java; working knowledge of R and C++."
+    },
+    {
+      "q": "Cloud and DevOps stack?",
+      "a": "AWS (S3, EC2, Lambda, SageMaker), Docker, Kubernetes, GitHub Actions/Jenkins, CI/CD."
+    },
+    {
+      "q": "ML/LLM stack?",
+      "a": "PyTorch, Transformers (Hugging Face), Longformer, LLaMA 3.x/DeepSeek, LangChain, CUDA, Captum explainability."
+    },
+    {
+      "q": "Best academic metric from your thesis?",
+      "a": "92.6% ±1 accuracy with MAE 0.235 for multi‑label ordinal SDoH prediction on opioid‑related clinical notes."
+    },
+    {
+      "q": "What did you lead at Verizon?",
+      "a": "The core Publish Module in Pega Decisioning/CDH for offer creation/validation/deployment; designed REST integrations and agent/queue‑processor automations."
+    },
+    {
+      "q": "Any throughput wins?",
+      "a": "Improved system throughput by ~20% via optimized queue processors and async orchestration in Verizon’s Pega Decisioning Hub."
+    },
+    {
+      "q": "Any latency wins?",
+      "a": "Reduced model inference latency ~30% using CUDA optimization and dynamic batching for transformer pipelines."
+    },
+    {
+      "q": "ETL and analytics experience?",
+      "a": "Engineered ETL/data flows and built dashboards (Tableau/Power BI), integrating Sheets/SQL and automation with Apps Script."
+    },
+    {
+      "q": "Tools for data engineering?",
+      "a": "Airflow, Kafka, ETL pipelines, AWS Glue patterns, data warehousing concepts."
+    },
+    {
+      "q": "Explain your advising bot.",
+      "a": "A GPT‑based advising assistant integrated with student data; fine‑tuned BERT regressors, automated grading with Dockerized CI scripts."
+    },
+    {
+      "q": "Active learning usage?",
+      "a": "Entropy‑based sampling to pick uncertain clinical notes for re‑annotation; improved model calibration and data quality."
+    },
+    {
+      "q": "Explainability methods?",
+      "a": "Token‑level attributions with Captum; clinician review loops to validate model decisions."
+    },
+    {
+      "q": "Pega certifications?",
+      "a": "CSSA, CPDC (also CSA earlier)."
+    },
+    {
+      "q": "Databases you’ve used?",
+      "a": "PostgreSQL, MySQL, Oracle SQL; some MongoDB/Firebase."
+    },
+    {
+      "q": "Favorite backend framework?",
+      "a": "FastAPI for clean, typed APIs and async performance."
+    },
+    {
+      "q": "Example project: AIOps Monitoring.",
+      "a": "Time‑series forecasting with LSTM/Prophet, anomaly alerts with AWS SNS, dashboards in Streamlit/Grafana."
+    },
+    {
+      "q": "Example project: Code Review Assistant.",
+      "a": "Fine‑tuned CodeLLaMA/DeepSeek‑Coder to analyze PRs via GitHub Actions; generated targeted comments."
+    },
+    {
+      "q": "Example project: Personal Knowledge Assistant.",
+      "a": "LangChain + Chroma with local docs; Streamlit UI; private/offline Q&A over notes/PDFs."
+    },
+    {
+      "q": "Leadership experience?",
+      "a": "Led 4‑member onshore/offshore team at Verizon; mentored students/peers; coordinated with architects and clinicians."
+    },
+    {
+      "q": "What makes you unique?",
+      "a": "Blend of enterprise Pega Decisioning ownership and modern LLM/ML engineering; I deliver reliable systems end‑to‑end."
+    },
+    {
+      "q": "Are you open to relocation?",
+      "a": "Yes; remote or hybrid are also fine."
+    },
+    {
+      "q": "Contact info?",
+      "a": "devasai1259@gmail.com | +1 (978) 942-1632 | Lowell, MA"
+    }
+  ],
+  "highlights": [
+    "92.6% ±1 accuracy, MAE 0.235 (Clinical Longformer, CORN, CEM‑ORD).",
+    "20% throughput gain via queue processors & async orchestration (Verizon Pega CDH).",
+    "30% inference latency reduction via CUDA optimization and dynamic batching.",
+    "70% manual effort reduction via FastAPI + Apps Script automations in Dean’s Office.",
+    "Led Publish Module; REST integrations between ReactJS and Pega Decisioning Hub."
+  ]
+}
