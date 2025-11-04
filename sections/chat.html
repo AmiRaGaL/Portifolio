@@ -7,19 +7,23 @@
       Fine-tuning in progress — using default model with resume context
     </div>
 
-    <form id="chat-form" class="chat-form">
+    <!-- Prevent accidental navigation -->
+    <form id="chat-form" class="chat-form" action="javascript:void(0)" novalidate autocomplete="off">
       <label for="prompt" class="sr-only">Ask about my resume</label>
       <textarea id="prompt" rows="4" placeholder="Ask something like: Summarize my strengths for an AI Engineer role in 2 lines."></textarea>
 
       <div class="chat-actions">
-        <button type="submit" class="btn-primary">Send</button>
-
+        <button id="send-btn" type="submit" class="btn-primary">Send</button>
         <button type="button" id="clear-chat" class="btn-secondary">Clear</button>
 
         <div class="model-wrap">
           <label for="model">Model</label>
           <select id="model" disabled>
             <option value="default" selected>Default (context-augmented)</option>
+            <!-- If you enable, use real Groq IDs:
+            <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+            <option value="llama-3.1-70b-versatile">Llama 3.1 70B Versatile</option>
+            -->
           </select>
         </div>
       </div>

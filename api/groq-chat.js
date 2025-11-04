@@ -1,4 +1,6 @@
+// api/groq-chat.js
 import Groq from "groq-sdk";
+
 export const config = { runtime: "nodejs" };
 
 export default async function handler(req, res) {
@@ -9,24 +11,25 @@ export default async function handler(req, res) {
     if (!apiKey) return res.status(500).send("Missing GROQ_API_KEY");
 
     let body = req.body || {};
-    if (typeof body === "string") {
-      try { body = JSON.parse(body); } catch {}
-    }
+    if (typeof body === "string") { try { body = JSON.parse(body); } catch {} }
     const { messages = [], stream = true, model } = body;
 
     const groq = new Groq({ apiKey });
-    const safeMessages = messages.length
+    const useModel = (model && model !== "default") ? model : "llama-3.1-8b-instant";
+    const safeMessages = Array.isArray(messages) && messages.length
       ? messages
-      : [{ role: "system", content: "ResumeAI." }, { role: "user", content: "Hello" }];
+      : [{ role: "system", content: "Be concise (1–4 sentences)." }, { role: "user", content: "Hello!" }];
 
     if (stream) {
       res.setHeader("Content-Type", "text/plain; charset=utf-8");
       res.setHeader("Cache-Control", "no-cache");
 
       const completion = await groq.chat.completions.create({
-        model: model || "llama-3.1-8b-instant",
+        model: useModel,
         messages: safeMessages,
-        stream: true
+        stream: true,
+        temperature: 0.2,
+        max_tokens: 512
       });
 
       for await (const part of completion) {
@@ -37,16 +40,18 @@ export default async function handler(req, res) {
     }
 
     const completion = await groq.chat.completions.create({
-      model: model || "llama-3.1-8b-instant",
+      model: useModel,
       messages: safeMessages,
-      stream: false
+      stream: false,
+      temperature: 0.2,
+      max_tokens: 512
     });
 
-    const text = completion?.choices?.[0]?.message?.content || "(no response)";
+    const text = completion?.choices?.[0]?.message?.content || "";
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.send(text);
   } catch (err) {
-    console.error("Groq API error:", err);
+    console.error("groq-chat error:", err);
     res.status(500).send(`Error: ${err.message}`);
   }
 }

@@ -1,11 +1,9 @@
 // js/script.js
 import { chatGroq } from "/js/groq.js";
 
-/* ============================
-   Debug helpers (visible + console)
-=============================== */
-function log(...args) { console.debug("[ResumeAI]", ...args); }
-function showError(msg) {
+/* Debug helpers */
+function log(...a){ console.debug("[ResumeAI]", ...a); }
+function showError(msg){
   let box = document.getElementById("ai-error-box");
   if (!box) {
     box = document.createElement("div");
@@ -14,50 +12,40 @@ function showError(msg) {
     const out = document.getElementById("answer") || document.body;
     out.parentNode.insertBefore(box, out);
   }
-  box.textContent = msg;
+  box.textContent = msg || "";
 }
 
-/* ============================
-   Lightweight Retrieval Logic
-=============================== */
-function score(query, qa) {
-  const terms = new Set(String(query).toLowerCase().split(/\W+/).filter(Boolean));
-  return qa
-    .map(x => {
-      const hay = (x.q + " " + x.a).toLowerCase();
-      let s = 0; for (const t of terms) if (hay.includes(t)) s++;
-      return { ...x, _score: s };
-    })
-    .sort((a, b) => b._score - a._score)
-    .slice(0, 5);
+/* Retrieval */
+function score(q, qa){
+  const terms = new Set(String(q).toLowerCase().split(/\W+/).filter(Boolean));
+  return qa.map(x=>{
+    const h=(x.q+" "+x.a).toLowerCase();
+    let s=0; for(const t of terms) if(h.includes(t)) s++;
+    return {...x,_score:s};
+  }).sort((a,b)=>b._score-a._score).slice(0,5);
 }
-
-async function getResumeContext(query) {
-  try {
-    log("Fetching KB /assets/resume_qa.json …");
-    const res = await fetch("/assets/resume_qa.json", { cache: "no-store" });
-    if (!res.ok) throw new Error(`KB HTTP ${res.status}`);
-    const kb = await res.json();
+async function getResumeContext(query){
+  try{
+    const r = await fetch("/assets/resume_qa.json", { cache:"no-store" });
+    if(!r.ok) throw new Error(`KB HTTP ${r.status}`);
+    const kb = await r.json();
     const top = score(query, kb.qa);
     return [
       `NAME: ${kb.profile.name}`,
       `SUMMARY: ${kb.profile.summary}`,
       `HIGHLIGHTS: ${kb.highlights.join(" | ")}`,
-      `RELEVANT QA: ${top.map(x => `Q:${x.q} A:${x.a}`).join(" | ")}`
+      `RELEVANT QA: ${top.map(x=>`Q:${x.q} A:${x.a}`).join(" | ")}`
     ].join("\n");
-  } catch (err) {
-    console.error("Error loading resume KB:", err);
-    showError(`KB load failed: ${String(err.message || err)}`);
-    return ""; // still proceed; model can answer with reduced context
+  }catch(e){
+    showError(`KB load failed: ${e.message||e}`);
+    return "";
   }
 }
 
-/* ============================
-   Resume AI Chat Function
-=============================== */
-async function askResumeAI(userPrompt, onToken, model) {
+/* Chat core */
+async function askResumeAI(userPrompt, onToken, model){
   const ctx = await getResumeContext(userPrompt);
-  const SYSTEM_PROMPT = `You are ResumeAI for Deva Sai Kumar Bheesetti.
+  const SYSTEM = `You are ResumeAI for Deva Sai Kumar Bheesetti.
 Answer strictly with the provided context. If you don't know, say so and suggest
 asking about skills, projects, experience, education, or certifications.
 Keep answers concise (1–4 sentences). Preserve exact metrics.
@@ -65,113 +53,95 @@ Keep answers concise (1–4 sentences). Preserve exact metrics.
 --- CONTEXT START ---
 ${ctx}
 --- CONTEXT END ---`;
-
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
-    { role: "user", content: userPrompt }
+    { role:"system", content:SYSTEM },
+    { role:"user", content:userPrompt }
   ];
-
-  log("Calling /api/groq-chat …", { model, hasCtx: Boolean(ctx) });
+  log("POST /api/groq-chat", {model, hasCtx:Boolean(ctx)});
   return chatGroq(JSON.stringify(messages), onToken, model);
 }
 
-/* ============================
-   Robust init that waits for section
-=============================== */
+/* Robust binding */
 let bound = false;
 
-function bindChatOnce(root = document) {
-  if (bound) return;
-  const form = root.querySelector("#chat-form");
-  const input = root.querySelector("#prompt");
-  const output = root.querySelector("#answer");
-  const modelSel = root.querySelector("#model");
-  const clearBtn = root.querySelector("#clear-chat");
+function handleSubmit(e, root){
+  e?.preventDefault?.();
+  e?.stopPropagation?.();
+  const form    = root.querySelector("#chat-form");
+  const input   = root.querySelector("#prompt");
+  const output  = root.querySelector("#answer");
+  const modelEl = root.querySelector("#model");
+  if(!form||!input||!output){ return; }
 
-  if (!form || !input || !output) {
-    log("Chat elements not present yet. Waiting…");
-    return;
-  }
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const prompt = input.value.trim();
+  if(!prompt) return;
+
+  showError("");
+  output.textContent = "";
+  if(submitBtn) submitBtn.disabled = true;
+
+  // normalize model (avoid sending "default")
+  const selected = modelEl?.value;
+  const effectiveModel = (selected && selected !== "default") ? selected : undefined;
+
+  // stable per-tab session id for logging
+  const sidKey="resumeAI_sessionId";
+  let sessionId = localStorage.getItem(sidKey) || (crypto.randomUUID?.() || String(Date.now()));
+  localStorage.setItem(sidKey, sessionId);
+
+  askResumeAI(prompt, (t)=>output.textContent += t, effectiveModel)
+    .then(()=>{
+      fetch("/api/save-log", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+          sessionId,
+          user: prompt,
+          ai: output.textContent,
+          meta:{ model: effectiveModel || "default", path: location.pathname }
+        })
+      }).catch(()=>{});
+    })
+    .catch(err=>{
+      console.error(err);
+      showError(`Chat error: ${err.message}`);
+      output.textContent = `Error: ${err.message}`;
+    })
+    .finally(()=>{ if(submitBtn) submitBtn.disabled=false; });
+}
+
+function bindChatOnce(root=document){
+  if(bound) return;
+  const form    = root.querySelector("#chat-form");
+  const input   = root.querySelector("#prompt");
+  const output  = root.querySelector("#answer");
+  const sendBtn = root.querySelector("#send-btn");
+  if(!form||!input||!output){ log("Chat nodes missing; wait…"); return; }
 
   bound = true;
   log("Binding chat handlers.");
 
-  // Session id for grouping logs
-  const sidKey = "resumeAI_sessionId";
-  let sessionId = localStorage.getItem(sidKey);
-  if (!sessionId) {
-    sessionId = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
-    localStorage.setItem(sidKey, sessionId);
+  form.addEventListener("submit", (e)=>handleSubmit(e, root), true);
+  if(sendBtn){
+    sendBtn.addEventListener("click", (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      handleSubmit(e, root);
+    }, true);
   }
 
-  // Quick API reachability ping (should return 405)
-  fetch("/api/groq-chat", { method: "GET" })
-    .then(r => log("Ping /api/groq-chat:", r.status))
-    .catch(e => { console.error(e); showError("Cannot reach /api/groq-chat"); });
+  fetch("/api/groq-chat", { method:"GET" })
+    .then(r=>log("Ping /api/groq-chat:", r.status))
+    .catch(()=>showError("Cannot reach /api/groq-chat (GET)"));
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const prompt = input.value.trim();
-    if (!prompt) return;
-    showError(""); // clear any previous visible error
-
-    output.textContent = "";
-    const submitBtn = form.querySelector("button[type=submit]");
-    if (submitBtn) submitBtn.disabled = true;
-
-    try {
-      await askResumeAI(
-        prompt,
-        (t) => (output.textContent += t),
-        modelSel?.value
-      );
-
-      // fire-and-forget log
-      fetch("/api/save-log", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId,
-          user: prompt,
-          ai: output.textContent,
-          meta: { model: modelSel?.value || "default", path: location.pathname }
-        })
-      }).catch(() => {});
-
-    } catch (err) {
-      console.error(err);
-      showError(`Chat error: ${err.message}`);
-      output.textContent = `Error: ${err.message}`;
-    } finally {
-      if (submitBtn) submitBtn.disabled = false;
-    }
-  });
-
-  if (clearBtn && output) {
-    clearBtn.addEventListener("click", () => {
-      showError("");
-      output.textContent = "";
-      input.value = "";
-      input.focus();
-    });
-  }
-
-  log("Chat ready. Try a prompt like: 'Summarize my strengths for an AI Engineer role in 2 lines.'");
+  log("Chat ready.");
 }
 
-/* Bind when DOM is ready (for static pages) */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", ()=>{
   bindChatOnce(document);
 
-  // If sections are injected later, watch for the chat section
-  const mo = new MutationObserver(() => {
-    if (!bound) bindChatOnce(document);
-  });
-  mo.observe(document.documentElement, { childList: true, subtree: true });
+  const mo = new MutationObserver(()=>{ if(!bound) bindChatOnce(document); });
+  mo.observe(document.documentElement, { childList:true, subtree:true });
 
-  // Also, if your loader dispatches a custom event when sections finish, listen for it:
-  window.addEventListener("sections:loaded", () => {
-    log("sections:loaded received");
-    bindChatOnce(document);
-  });
+  window.addEventListener("sections:loaded", ()=>{ if(!bound) bindChatOnce(document); });
 });

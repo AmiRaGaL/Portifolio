@@ -8,12 +8,15 @@ export async function chatGroq(messagesOrPrompt, onToken, model) {
     ? { messages: JSON.parse(messagesOrPrompt) }
     : { messages: [{ role: "user", content: String(messagesOrPrompt ?? "").trim() }] };
 
-  console.debug("[chatGroq] POST /api/groq-chat", { model, body });
+  // only send model if it's a real id
+  const payload = { ...body, stream: true, ...(model ? { model } : {}) };
+
+  console.debug("[chatGroq] POST /api/groq-chat", { body: payload });
 
   const res = await fetch("/api/groq-chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...body, stream: true, ...(model ? { model } : {}) })
+    body: JSON.stringify(payload)
   });
 
   if (!res.ok) {

@@ -1,11 +1,15 @@
+// api/save-log.js
 import { put } from "@vercel/blob";
+
 export const config = { runtime: "nodejs" };
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
+
   try {
     let body = req.body || {};
     if (typeof body === "string") { try { body = JSON.parse(body); } catch {} }
+
     const { sessionId, user, ai, meta } = body;
 
     const record = {
@@ -21,7 +25,7 @@ export default async function handler(req, res) {
       }
     };
 
-    const date = new Date().toISOString().slice(0,10);
+    const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const key = `resume-ai/logs/${date}/${record.sessionId}/${Date.now()}.jsonl`;
 
     await put(key, JSON.stringify(record) + "\n", {
