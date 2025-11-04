@@ -1,36 +1,4 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
-
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/home", "destination": "/sections/home.html" },
-    { "source": "/about", "destination": "/sections/about.html" },
-    { "source": "/skills", "destination": "/sections/skills.html" },
-    { "source": "/experience", "destination": "/sections/experience.html" },
-    { "source": "/projects", "destination": "/sections/projects.html" },
-    { "source": "/contact", "destination": "/sections/contact.html" }
-  ],
-
-  "redirects": [
-    { "source": "/resume", "destination": "/assets/Resume_SDE.pdf", "permanent": false }
-  ],
-
-  "headers": [
-    {
-      "source": "/(css|js|images|assets)/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
-      ]
-    }
-  ]
+  "trailingSlash": false
 }

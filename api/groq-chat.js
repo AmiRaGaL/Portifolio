@@ -1,47 +1,24 @@
-// api/groq-chat.js
 import Groq from "groq-sdk";
-
-export const config = { runtime: "nodejs" }; 
+export const config = { runtime: "nodejs" };
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.status(405).send("Method Not Allowed");
-    return;
-  }
+  if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
 
   try {
     const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      res.status(500).send("Missing GROQ_API_KEY");
-      return;
-    }
+    if (!apiKey) return res.status(500).send("Missing GROQ_API_KEY");
 
-    // Parse incoming body
-    let body = {};
-    try {
-      body = req.body || {};
-      if (typeof body === "string") body = JSON.parse(body);
-    } catch (e) {
-      console.error("Body parse error:", e);
+    let body = req.body || {};
+    if (typeof body === "string") {
+      try { body = JSON.parse(body); } catch {}
     }
-
     const { messages = [], stream = true, model } = body;
 
-    const safeMessages =
-      Array.isArray(messages) && messages.length
-        ? messages
-        : [
-            {
-              role: "system",
-              content:
-                "You are ResumeAI for Deva Sai Kumar Bheesetti. Answer using only the provided context. Be concise (1–4 sentences).",
-            },
-            { role: "user", content: "Hello" },
-          ];
-
     const groq = new Groq({ apiKey });
+    const safeMessages = messages.length
+      ? messages
+      : [{ role: "system", content: "ResumeAI." }, { role: "user", content: "Hello" }];
 
-    // Stream response
     if (stream) {
       res.setHeader("Content-Type", "text/plain; charset=utf-8");
       res.setHeader("Cache-Control", "no-cache");
@@ -49,26 +26,23 @@ export default async function handler(req, res) {
       const completion = await groq.chat.completions.create({
         model: model || "llama-3.1-8b-instant",
         messages: safeMessages,
-        stream: true,
+        stream: true
       });
 
       for await (const part of completion) {
         const token = part?.choices?.[0]?.delta?.content ?? "";
         if (token) res.write(token);
       }
-      res.end();
-      return;
+      return res.end();
     }
 
-    // Non-stream fallback
     const completion = await groq.chat.completions.create({
       model: model || "llama-3.1-8b-instant",
       messages: safeMessages,
-      stream: false,
+      stream: false
     });
 
-    const text =
-      completion?.choices?.[0]?.message?.content || "(no response)";
+    const text = completion?.choices?.[0]?.message?.content || "(no response)";
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.send(text);
   } catch (err) {

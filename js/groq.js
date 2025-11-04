@@ -8,6 +8,8 @@ export async function chatGroq(messagesOrPrompt, onToken, model) {
     ? { messages: JSON.parse(messagesOrPrompt) }
     : { messages: [{ role: "user", content: String(messagesOrPrompt ?? "").trim() }] };
 
+  console.debug("[chatGroq] POST /api/groq-chat", { model, body });
+
   const res = await fetch("/api/groq-chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -15,7 +17,9 @@ export async function chatGroq(messagesOrPrompt, onToken, model) {
   });
 
   if (!res.ok) {
-    throw new Error(`Groq chat failed: ${res.status} ${res.statusText}`);
+    const text = await res.text().catch(() => "");
+    console.error("[chatGroq] HTTP error", res.status, res.statusText, text);
+    throw new Error(`Groq chat failed: ${res.status} ${res.statusText} — ${text}`);
   }
 
   const reader = res.body.getReader();
