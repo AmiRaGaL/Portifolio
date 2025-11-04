@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vercel/blob": "^2.0.0",
     "groq-sdk": "^0.34.0"
   }
 }
