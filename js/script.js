@@ -66,31 +66,28 @@ ${ctx}
   return chatGroq(JSON.stringify(messages), onToken, model);
 }
 
-/* ---------- Bind & handlers ---------- */
+/* ---------- Chat binding ---------- */
 let bound = false;
-
 function handleSubmit(e, root){
   e?.preventDefault?.();
   e?.stopPropagation?.();
-
-  const form    = root.querySelector("#chat-form");
-  const input   = root.querySelector("#prompt");
-  const output  = root.querySelector("#answer");
+  const form = root.querySelector("#chat-form");
+  const input = root.querySelector("#prompt");
+  const output = root.querySelector("#answer");
   const modelEl = root.querySelector("#model");
-  if(!form||!input||!output){ return; }
+  if(!form||!input||!output) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const prompt = input.value.trim();
   if(!prompt) return;
 
-  showError(""); // hide error box
+  showError("");
   output.textContent = "";
   if(submitBtn) submitBtn.disabled = true;
 
   const selected = modelEl?.value;
   const effectiveModel = (selected && selected !== "default") ? selected : undefined;
 
-  // stable per-tab session id
   const sidKey="resumeAI_sessionId";
   let sessionId = localStorage.getItem(sidKey) || (crypto.randomUUID?.() || String(Date.now()));
   localStorage.setItem(sidKey, sessionId);
@@ -118,9 +115,9 @@ function handleSubmit(e, root){
 
 function bindChatOnce(root=document){
   if(bound) return;
-  const form    = root.querySelector("#chat-form");
-  const input   = root.querySelector("#prompt");
-  const output  = root.querySelector("#answer");
+  const form = root.querySelector("#chat-form");
+  const input = root.querySelector("#prompt");
+  const output = root.querySelector("#answer");
   const sendBtn = root.querySelector("#send-btn");
   const clearBtn= root.querySelector("#clear-chat");
   if(!form||!input||!output){ log("Chat nodes missing; wait…"); return; }
@@ -138,11 +135,8 @@ function bindChatOnce(root=document){
 
   // ✨ Ctrl/Cmd + Enter shortcut
   input.addEventListener("keydown", (e) => {
-    const isEnter = e.key === "Enter";
-    const modifier = e.ctrlKey || e.metaKey;
-    if (isEnter && modifier) {
-      e.preventDefault();
-      e.stopPropagation();
+    if ((e.key === "Enter") && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault(); e.stopPropagation();
       handleSubmit(e, root);
     }
   });
@@ -160,9 +154,63 @@ function bindChatOnce(root=document){
   log("Chat ready. (Ctrl+Enter to send)");
 }
 
+/* ---------- Theme handling ---------- */
+function applySavedTheme() {
+  const saved = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
+  const useDark = saved ? saved === "dark" : !!prefersDark;
+  document.body.classList.toggle("dark-theme", useDark);
+  document.documentElement.style.colorScheme = useDark ? "dark" : "light";
+}
+function initTheme() {
+  document.documentElement.classList.add("no-theme-transition");
+  applySavedTheme();
+  setTimeout(() => document.documentElement.classList.remove("no-theme-transition"), 50);
+  const tgl = document.getElementById("theme-toggle");
+  if (tgl) {
+    tgl.addEventListener("click", () => {
+      const next = !document.body.classList.contains("dark-theme");
+      document.body.classList.toggle("dark-theme", next);
+      document.documentElement.style.colorScheme = next ? "dark" : "light";
+      localStorage.setItem("theme", next ? "dark" : "light");
+    });
+  }
+  const mq = window.matchMedia?.("(prefers-color-scheme: dark)");
+  if (mq) mq.addEventListener("change", () => { if (!localStorage.getItem("theme")) applySavedTheme(); });
+}
+
+/* ---------- Scroll-to-top arrow ---------- */
+function ensureScrollArrow() {
+  let btn = document.getElementById("scroll-arrow");
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.id = "scroll-arrow";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Back to start");
+    btn.innerHTML = "↑";
+    document.body.appendChild(btn);
+  }
+  const target = document.querySelector("#home, .section.home, section.section:first-of-type");
+  btn.addEventListener("click", () => {
+    const top = target ? target.getBoundingClientRect().top + window.scrollY : 0;
+    window.scrollTo({ top, behavior: "smooth" });
+  });
+  const onScroll = () => btn.classList.toggle("show", window.scrollY > 240);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+/* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", ()=>{
+  initTheme();
+  ensureScrollArrow();
   bindChatOnce(document);
+
   const mo = new MutationObserver(()=>{ if(!bound) bindChatOnce(document); });
   mo.observe(document.documentElement, { childList:true, subtree:true });
-  window.addEventListener("sections:loaded", ()=>{ if(!bound) bindChatOnce(document); });
+
+  window.addEventListener("sections:loaded", ()=>{
+    ensureScrollArrow();
+    if(!bound) bindChatOnce(document);
+  });
 });

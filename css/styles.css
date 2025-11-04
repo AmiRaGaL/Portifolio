@@ -349,3 +349,34 @@ body.dark-theme {
   --bs-link-color: #a6785a;
   --bs-link-hover-color: #e0b37a;
 }
+/* Smooth theme transitions */
+html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .status-badge {
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.no-theme-transition, .no-theme-transition * { transition: none !important; }
+
+/* Scroll-to-top arrow */
+#scroll-arrow {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  color: var(--text-color);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  cursor: pointer;
+  user-select: none;
+}
+#scroll-arrow.show { display: flex; }
+#scroll-arrow:hover { transform: translateY(-2px); }
+#scroll-arrow:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
