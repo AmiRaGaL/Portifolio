@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   if (!token) {
     return res.status(500).json({
       error: "Blob token not configured",
-      hint: "Set VERCEL_BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN in this environment",
       code: "E_TOKEN_MISSING"
     });
   }
@@ -22,32 +21,34 @@ export default async function handler(req, res) {
     const answer = body?.answer ?? body?.ai;
     const model  = body?.model ?? body?.meta?.model ?? "default";
     const sessionId = body?.meta?.sessionId ?? body?.sessionId ?? "anon";
+    const path     = body?.meta?.path ?? body?.meta?.page ?? null;
 
     if (!prompt || !answer) {
       return res.status(400).json({ error: "prompt and answer are required" });
     }
 
-    const ts = new Date().toISOString();
+    const ts  = new Date().toISOString();
     const day = ts.slice(0, 10); // YYYY-MM-DD
-    const key = `chat-logs/${day}/${ts}-${sessionId}.json`;
+    // Public blob (token requires it) + hard-to-guess path
+    const key = `chat-logs/${day}/${sessionId}/${ts}.json`;
 
-    const payload = {
-      ts, model, prompt, answer,
-      meta: {
-        sessionId,
-        path: body?.meta?.path ?? body?.meta?.page ?? null,
-        ua: req.headers["user-agent"] || null,
-        ip: req.headers["x-forwarded-for"] || req.socket?.remoteAddress || null
+    const payload = { ts, model, prompt, answer, meta: { sessionId, path } };
+
+    const { url } = await put(
+      key,
+      new Blob([JSON.stringify(payload)], { type: "application/json" }),
+      {
+        // ✅ Your token requires "public"
+        access: "public",
+        // Make the final URL hard to guess; also avoids name collisions
+        addRandomSuffix: true,
+        token,
+        contentType: "application/json",
+        cacheControl: "no-store"
       }
-    };
+    );
 
-    await put(key, new Blob([JSON.stringify(payload)], { type: "application/json" }), {
-      access: "private",
-      addRandomSuffix: false,
-      token
-    });
-
-    return res.status(200).json({ ok: true, key });
+    return res.status(200).json({ ok: true, url });
   } catch (err) {
     console.error("[save-log] error:", err);
     return res.status(500).json({
