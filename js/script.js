@@ -94,14 +94,15 @@ function handleSubmit(e, root){
 
   askResumeAI(prompt, (t)=>output.textContent += t, effectiveModel)
     .then(()=>{
+      // ✅ Save logs with correct field names
       fetch("/api/save-log", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body:JSON.stringify({
-          sessionId,
-          user: prompt,
-          ai: output.textContent,
-          meta:{ model: effectiveModel || "default", path: location.pathname }
+          prompt,                       // expected by API
+          answer: output.textContent,   // expected by API
+          model: effectiveModel || "default",
+          meta:{ sessionId, path: location.pathname }
         })
       }).catch(()=>{});
     })
@@ -213,38 +214,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
     ensureScrollArrow();
     if(!bound) bindChatOnce(document);
   });
-});
-
-sendBtn.addEventListener("click", async () => {
-  const prompt = (promptEl.value || "").trim();
-  if (!prompt) return;
-
-  sendBtn.disabled = true;
-  answerEl.textContent = "";
-  const modelChosen = modelEl.value || undefined;
-
-  let answer = "";
-  try {
-    await chatGroq(
-      prompt,
-      (t) => { answer += t; answerEl.textContent = answer; },
-      modelChosen
-    );
-
-    // fire-and-forget log (do not block UI)
-    fetch("/api/save-log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt,
-        answer,
-        model: modelChosen || undefined,
-        meta: { page: location.pathname + location.hash }
-      }),
-    }).catch(() => {});
-  } catch (err) {
-    answerEl.textContent = `Error: ${err.message}`;
-  } finally {
-    sendBtn.disabled = false;
-  }
 });
