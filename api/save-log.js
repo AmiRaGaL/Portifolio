@@ -1,53 +1,70 @@
 // api/save-log.js
 import { put } from "@vercel/blob";
 
-export const config = { runtime: "nodejs" };
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
-    let body = req.body || {};
-    if (typeof body === "string") { try { body = JSON.parse(body); } catch {} }
+    // Use the updated environment variable
+    const token = process.env.VERCEL_BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN;
+    if (!token) return res.status(500).json({ error: "Blob token not configured" });
 
-    const { sessionId, user, ai, meta } = body;
-
-    const record = {
-      ts: new Date().toISOString(),
-      sessionId: String(sessionId || Date.now()),
-      userPrompt: String(user || ""),
-      aiAnswer: String(ai || ""),
-      meta: {
-        path: meta?.path || null,
-        model: meta?.model || null,
-        userAgent: req.headers["user-agent"] || null,
-        referrer: req.headers.referer || null
-      }
-    };
-
-    const token =
-      process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
-      process.env.BLOB_READ_WRITE_TOKEN ||
-      process.env.BLOB_RW_TOKEN;
-
-    if (!token) {
-      // No token configured: just log to server logs and succeed.
-      console.log("CHAT LOG (console only):", record);
-      return res.status(200).send("ok (console only)");
+    const { prompt, answer, model, meta } = await readJson(req);
+    if (!prompt || !answer) {
+      return res.status(400).json({ error: "prompt and answer are required" });
     }
 
-    const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const key = `resume-ai/logs/${date}/${record.sessionId}/${Date.now()}.jsonl`;
+    const ts = new Date().toISOString();
+    const day = ts.slice(0, 10); // YYYY-MM-DD
+    const data = {
+      ts,
+      model: model || null,
+      prompt,
+      answer,
+      meta: {
+        ua: req.headers["user-agent"] || null,
+        ip: req.headers["x-forwarded-for"] || req.socket?.remoteAddress || null,
+        ...meta,
+      },
+    };
 
-    await put(key, JSON.stringify(record) + "\n", {
-      access: "private",
-      contentType: "application/json",
-      token
-    });
+    const key = `chat-logs/${day}/log.jsonl`;
+    await appendJsonl(key, data, token);
 
-    res.status(200).send("ok");
-  } catch (e) {
-    console.error("save-log error:", e);
-    res.status(500).send(`Log error: ${e.message}`);
+    return res.status(200).json({ ok: true, key });
+  } catch (err) {
+    console.error("[save-log] error:", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
+}
+
+async function readJson(req) {
+  const chunks = [];
+  for await (const c of req) chunks.push(c);
+  return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
+}
+
+// Append to existing JSONL file in Blob
+async function appendJsonl(key, obj, token) {
+  let existing = "";
+  try {
+    const resp = await fetch(`https://blob.vercel-storage.com/${encodeURI(key)}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (resp.ok) existing = await resp.text();
+  } catch (_) {
+    // ignore if file not found
+  }
+
+  const next = (existing ? existing + "\n" : "") + JSON.stringify(obj);
+
+  await put(key, new Blob([next], { type: "application/jsonl" }), {
+    access: "private",
+    addRandomSuffix: false,
+    token,
+  });
 }
