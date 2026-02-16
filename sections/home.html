@@ -7,6 +7,8 @@
             --text: #0d0d0d;
             --muted: #6b7280;
             --bg: transparent;
+            padding: 0;
+            margin-top: 40px;
         }
         html.dark #home {
             --text: #e5e7eb;
@@ -15,9 +17,12 @@
         #home .container {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            gap: 2.5rem;
+            gap: 3rem;
             align-items: center;
-            padding: 4rem 1.25rem;
+            padding: 3rem 1.25rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         #home .kicker {
             display: inline-flex;
@@ -26,34 +31,51 @@
             background: rgba(108, 92, 231, 0.1);
             border: 1px solid rgba(108, 92, 231, 0.18);
             color: var(--accent);
-            padding: 0.35rem 0.65rem;
+            padding: 0.4rem 0.75rem;
             border-radius: 999px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
+            animation: fadeInDown 0.6s ease;
         }
         #home h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             line-height: 1.1;
-            margin: 0.75rem 0 0.5rem;
+            margin: 1rem 0 0.75rem;
             color: var(--text);
+            font-weight: 800;
+        }
+        #home .highlight {
+            background: linear-gradient(120deg, var(--accent) 0%, #a29bfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         #home .sub {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
+            line-height: 1.6;
             color: var(--muted);
-            max-width: 60ch;
+            max-width: 65ch;
+            margin-bottom: 1.5rem;
         }
         #home .badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1.25rem 0;
+            gap: 0.6rem;
+            margin: 1.5rem 0;
         }
         #home .badge {
-            padding: 0.4rem 0.65rem;
+            padding: 0.5rem 0.85rem;
             border-radius: 999px;
             border: 1px solid rgba(0, 0, 0, 0.08);
             background: rgba(0, 0, 0, 0.03);
-            font-size: 0.85rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        #home .badge:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            background: rgba(108, 92, 231, 0.08);
         }
         html.dark #home .badge {
             border-color: rgba(255, 255, 255, 0.14);
@@ -62,26 +84,38 @@
         #home .cta {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 1.25rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
         #home .btn {
             position: relative;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.7rem 1rem;
+            padding: 0.875rem 1.5rem;
             border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.1);
             background: #fff;
             color: #111;
             font-weight: 600;
+            font-size: 1rem;
             text-decoration: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
         #home .btn.primary {
             background: var(--accent);
             border-color: var(--accent);
             color: #fff;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        #home .btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        #home .btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
         }
         #home .btn:focus {
             outline: 2px solid var(--accent);
@@ -96,44 +130,52 @@
             background: var(--accent);
             color: #fff;
         }
-        #home .meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-top: 1rem;
-            color: var(--muted);
-        }
         #home .avatarWrap {
             position: relative;
+            animation: fadeInRight 0.8s ease;
         }
         #home .avatar {
-            width: min(380px, 80%);
-            max-width: 420px;
+            width: 100%;
+            max-width: 450px;
             aspect-ratio: 1/1;
             border-radius: 24px;
             object-fit: cover;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        #home .avatar:hover {
+            transform: scale(1.02);
         }
         #home .stats {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.75rem;
-            margin-top: 1.25rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
         #home .stat {
-            padding: 0.85rem;
+            padding: 1.25rem;
             border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 16px;
             background: rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        #home .stat:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         #home .stat .n {
             font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--text);
+            font-size: 1.5rem;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.25rem;
         }
         #home .stat .l {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--muted);
+            line-height: 1.3;
         }
         html.dark #home .stat {
             border-color: rgba(255, 255, 255, 0.12);
@@ -141,36 +183,109 @@
         }
         #home .social {
             display: flex;
-            gap: 0.6rem;
-            margin-top: 0.75rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
         #home .social a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 999px;
             border: 1px solid rgba(0, 0, 0, 0.08);
-            transition: all 0.2s ease;
+            background: rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
         }
         #home .social a:hover {
-            transform: scale(1.1);
+            transform: translateY(-3px);
             border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
         }
         html.dark #home .social a {
             border-color: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        #home .achievements {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        html.dark #home .achievements {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+        #home .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        #home .achievement-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        #home .achievement-text {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        #home .achievement-text strong {
+            display: block;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         @media (max-width: 900px) {
+            #home {
+                margin-top: 60px;
+            }
             #home .container {
                 grid-template-columns: 1fr;
-                gap: 1.75rem;
+                gap: 2.5rem;
                 text-align: center;
+                padding: 2rem 1.25rem;
             }
             #home .avatar {
                 margin-inline: auto;
             }
-            #home .cta, #home .badges, #home .meta, #home .social {
+            #home .cta, #home .badges, #home .social {
+                justify-content: center;
+            }
+            #home .stats {
+                grid-template-columns: 1fr;
+            }
+            #home .achievements {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            #home .achievement-item {
                 justify-content: center;
             }
         }
@@ -179,55 +294,84 @@
     <div class="container">
         <!-- Left Text -->
         <div class="copy" data-aos="fade-up" data-aos-delay="80">
-            <span class="kicker">👋 Hey, I'm <strong>Deva</strong></span>
-            <h1>Building <span class="typed" aria-live="polite"></span></h1>
+            <span class="kicker">👋 Hey, I'm <strong>Deva Sai Kumar</strong></span>
+            <h1>Building <span class="highlight typed" aria-live="polite"></span></h1>
             <p class="sub">
-                Full-stack developer & AI engineer crafting reliable backends, clean UIs, and LLM-powered features. 
-                I love turning complex data systems into fast, usable products.
+                Full-stack developer & AI engineer passionate about creating intelligent systems. 
+                I specialize in building scalable backends, intuitive UIs, and LLM-powered applications 
+                that transform complex data into actionable insights.
             </p>
 
             <div class="badges" aria-label="core skills">
-                <span class="badge">Python</span>
-                <span class="badge">TypeScript</span>
-                <span class="badge">NestJS</span>
-                <span class="badge">React Native</span>
-                <span class="badge">RAG & LLMs</span>
-                <span class="badge">AWS</span>
-                <span class="badge">Pega CSSA</span>
+                <span class="badge">🐍 Python</span>
+                <span class="badge">⚡ TypeScript</span>
+                <span class="badge">🚀 NestJS</span>
+                <span class="badge">📱 React Native</span>
+                <span class="badge">🤖 RAG & LLMs</span>
+                <span class="badge">☁️ AWS</span>
+                <span class="badge">💼 Pega CSSA</span>
             </div>
 
             <div class="cta">
-                <a href="#contact" class="btn" data-ripple>Contact Me</a>
-                <a href="#projects" class="btn" data-ripple>See Projects</a>
+                <a href="#contact" class="btn primary" data-ripple>
+                    <span>Let's Connect</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#projects" class="btn" data-ripple>
+                    <span>View Projects</span>
+                </a>
             </div>
 
-            <div class="meta">
-                <div class="social" aria-label="social links">
-                    <a href="https://github.com/devasai1259" aria-label="GitHub" target="_blank" rel="noreferrer">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.35-1.76-1.35-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.87 1.25 1.87 1.25 1.08 1.86 2.83 1.32 3.52 1.01.11-.78.42-1.32.76-1.63-2.67-.3-5.48-1.33-5.48-5.9 0-1.3.47-2.36 1.24-3.19-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.3-1.22 3.3-1.22.66 1.65.24 2.87.12 3.17.77.83 1.24 1.9 1.24 3.19 0 4.58-2.81 5.59-5.49 5.89.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0 0 12 .5z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/deva-sai-kumar-bheesetti-34380812b" aria-label="LinkedIn" target="_blank" rel="noreferrer">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.49 1 4.98 2.12 4.98 3.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.7c0-1.6 0-3.7-2.25-3.7s-2.6 1.76-2.6 3.58V23h-4V8.5z"/>
-                        </svg>
-                    </a>
-                </div>
+            <div class="social" aria-label="social links">
+                <a href="https://github.com/devasai1259" aria-label="GitHub" target="_blank" rel="noreferrer">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.35-1.76-1.35-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.87 1.25 1.87 1.25 1.08 1.86 2.83 1.32 3.52 1.01.11-.78.42-1.32.76-1.63-2.67-.3-5.48-1.33-5.48-5.9 0-1.3.47-2.36 1.24-3.19-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.3-1.22 3.3-1.22.66 1.65.24 2.87.12 3.17.77.83 1.24 1.9 1.24 3.19 0 4.58-2.81 5.59-5.49 5.89.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0 0 12 .5z"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/deva-sai-kumar-bheesetti-34380812b" aria-label="LinkedIn" target="_blank" rel="noreferrer">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.49 1 4.98 2.12 4.98 3.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.7c0-1.6 0-3.7-2.25-3.7s-2.6 1.76-2.6 3.58V23h-4V8.5z"/>
+                    </svg>
+                </a>
+                <a href="mailto:devasai1259@gmail.com" aria-label="Email" target="_blank" rel="noreferrer">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M2 6l10 7 10-7"/>
+                    </svg>
+                </a>
             </div>
 
             <div class="stats" aria-label="quick stats">
                 <div class="stat">
                     <div class="n">5+</div>
-                    <div class="l">Years Experience</div>
+                    <div class="l">Years Professional Experience</div>
                 </div>
                 <div class="stat">
                     <div class="n">MS CS</div>
-                    <div class="l">UMass Lowell, 3.94 GPA</div>
+                    <div class="l">UMass Lowell<br>3.94 GPA</div>
                 </div>
                 <div class="stat">
                     <div class="n">RAG</div>
                     <div class="l">Healthcare NLP Research</div>
+                </div>
+            </div>
+
+            <div class="achievements">
+                <div class="achievement-item">
+                    <div class="achievement-icon">🏆</div>
+                    <div class="achievement-text">
+                        <strong>Pega CSSA</strong>
+                        Certified Professional
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">📊</div>
+                    <div class="achievement-text">
+                        <strong>10+ Projects</strong>
+                        Full-stack & AI/ML
+                    </div>
                 </div>
             </div>
         </div>
@@ -243,7 +387,7 @@
         (function() {
             const el = document.querySelector('#home .typed');
             if (!el) return;
-            const roles = ['LLM-powered products', 'reliable APIs & systems', 'data-driven experiences'];
+            const roles = ['LLM-powered products', 'reliable APIs & systems', 'data-driven experiences', 'intelligent automation'];
             let i = 0, j = 0, dir = 1;
             function tick() {
                 const word = roles[i];
@@ -285,132 +429,3 @@
         });
     </script>
 </section>
-
-<!-- ========================================
-     FLOATING CHAT WIDGET
-     Note: This should ideally be in index.html 
-     for availability across all pages
-     ======================================== -->
-<!-- <div class="chat-widget">
-    <div class="chat-button" id="chatButton" title="Ask My AI" role="button" aria-label="Open AI chat">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.38 14.99 3.04 16.28L2 22L7.97 20.97C9.22 21.58 10.61 21.92 12 21.92C17.52 21.92 22 17.44 22 11.92C22 6.4 17.52 2 12 2Z" fill="currentColor"/>
-            <circle cx="8.5" cy="12" r="1" fill="white"/>
-            <circle cx="12" cy="12" r="1" fill="white"/>
-            <circle cx="15.5" cy="12" r="1" fill="white"/>
-        </svg>
-    </div> -->
-    
-    <div class="chat-panel" id="chatPanel" role="dialog" aria-labelledby="chatTitle" aria-hidden="true">
-        <div class="chat-header">
-            <div class="chat-header-content">
-                <h3 id="chatTitle">💬 Ask My AI</h3>
-                <p>Ask me anything about Deva</p>
-            </div>
-            <button class="close-chat" id="closeChat" aria-label="Close chat" type="button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        <!-- <div class="chat-content">     <iframe src="/chat-widget.html" title="AI Chat Interface" frameborder="0" width="100%" height="100%"></iframe>  </div> -->
-    </div>
-</div>
-<script>
-    console.log('Chat widget script loaded');
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded');
-        
-        const chatButton = document.getElementById('chatButton');
-        const chatPanel = document.getElementById('chatPanel');
-        const closeChat = document.getElementById('closeChat');
-
-        console.log('chatButton:', chatButton);
-        console.log('chatPanel:', chatPanel);
-        console.log('closeChat:', closeChat);
-
-        if (!chatButton || !chatPanel || !closeChat) {
-            console.error('Missing elements!');
-            return;
-        }
-
-        chatButton.addEventListener('click', function(e) {
-            console.log('Button clicked!');
-            e.preventDefault();
-            e.stopPropagation();
-            
-            chatPanel.classList.add('active');
-            console.log('Panel classes:', chatPanel.classList);
-            chatButton.style.display = 'none';
-        });
-
-        closeChat.addEventListener('click', function(e) {
-            console.log('Close clicked!');
-            e.preventDefault();
-            e.stopPropagation();
-            chatPanel.classList.remove('active');
-            chatButton.style.display = 'flex';
-        });
-    });
-</script>
-
-<script>
-    // Floating Chat Widget Functionality
-    (function() {
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatButton = document.getElementById('chatButton');
-            const chatPanel = document.getElementById('chatPanel');
-            const closeChat = document.getElementById('closeChat');
-
-            // Validation check
-            if (!chatButton || !chatPanel || !closeChat) {
-                console.error('Chat widget: Required elements not found');
-                return;
-            }
-
-            // Open chat panel
-            chatButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                chatPanel.classList.add('active');
-                chatPanel.setAttribute('aria-hidden', 'false');
-                chatButton.style.display = 'none';
-                
-                // Focus management for accessibility
-                closeChat.focus();
-            });
-
-            // Close chat panel
-            function closePanel() {
-                chatPanel.classList.remove('active');
-                chatPanel.setAttribute('aria-hidden', 'true');
-                chatButton.style.display = 'flex';
-                chatButton.focus();
-            }
-
-            closeChat.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closePanel();
-            });
-
-            // Close on outside click
-            document.addEventListener('click', function(event) {
-                if (chatPanel.classList.contains('active') && 
-                    !chatPanel.contains(event.target) && 
-                    !chatButton.contains(event.target)) {
-                    closePanel();
-                }
-            });
-
-            // Close on Escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && chatPanel.classList.contains('active')) {
-                    closePanel();
-                }
-            });
-        });
-    })();
-</script>
