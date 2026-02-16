@@ -5,8 +5,8 @@ const sections = {
   skills: "sections/skills.html",
   experience: "sections/experience.html",
   projects: "sections/projects.html",
-  contact: "sections/contact.html",
-  chat: "sections/chat.html" 
+  chat: "sections/chat.html", 
+  contact: "sections/contact.html"
 };
 
 function mountFor(id) {

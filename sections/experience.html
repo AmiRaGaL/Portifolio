@@ -2,25 +2,40 @@
   <div class="container">
     <h2 class="text-center text-primary mb-5">Experience</h2>
     <p class="lead text-center mb-5" data-aos="fade-up" style="max-width: 900px; margin: 0 auto;">
-  I started my career as a Software Developer at <strong>Infosys (Client: Verizon)</strong>, where I spent three years building
-  <strong>Pega Decisioning and automation systems</strong> that powered large-scale marketing operations. Leading
-  the <em>Publish Module</em> and working directly with Verizon's architects taught me what it takes to design systems that scale.
+  I began my career at <strong>Infosys</strong>, working with <strong>Verizon</strong> for three years on <strong>Pega Decisioning and automation systems</strong> that ran their marketing operations at scale. I led the <em>Publish Module</em> and got to work closely with Verizon's architects, which taught me a lot about building systems that actually work under pressure.
   <br><br>
-  To deepen my technical foundation, I pursued a <strong>Master's in Computer Science</strong> at the <strong>University of Massachusetts Lowell</strong>,
-  concentrating on <strong>AI and Healthcare</strong>. My thesis explored a new approach to <strong>ordinal severity prediction</strong> in opioid-related
-  clinical notes using transformer models and active learning techniques.
+  I wanted to go deeper technically, so I went back to school for a <strong>Master's in Computer Science</strong> at <strong>UMass Lowell</strong>, focusing on <strong>AI and Healthcare</strong>. My thesis was all about predicting <strong>severity levels</strong> in opioid-related clinical notes using transformer models and active learning. During grad school, I also worked as a <strong>Graduate Assistant</strong> in the Dean's Office, where I automated grading, analytics, and event operations with Python, FastAPI, and Tableau.
   <br><br>
-  At the same time, I worked as a <strong>Graduate Assistant</strong> in the Dean's Office of the Manning School of Business. As the only CS engineer
-  on the team, I <strong>automated grading, analytics, and event operations</strong> using Python, FastAPI, and Tableau, which helped
-  free up staff time for more strategic work.
+  Now I'm working as a <strong>Full-Stack Engineer at OurFreedom.ai</strong>, building social networking features with <strong>NestJS, React Native, and MongoDB</strong>. I'm handling everything from backend APIs and voice communication to content moderation and CI/CD - basically architecting production systems that scale.
   <br><br>
-  Whether building <strong>decisioning engines</strong> or developing <strong>AI-driven automation pipelines</strong>, my work connects
-  enterprise software with intelligent systems. This aligns with my long-term passion for <strong>IoT and home automation</strong>,
-  a space I believe companies like <strong>Amazon</strong> are positioned to transform.
+  Whether it's <strong>decisioning engines</strong>, <strong>AI automation pipelines</strong>, or <strong>full-stack social platforms</strong>, I love building systems that connect people and technology. It ties back to my longtime interest in <strong>IoT and home automation</strong> - a space where companies like <strong>Amazon</strong> are doing really exciting things.
 </p>
 
 
     <div class="timeline">
+
+      <!-- OurFreedom.ai Full-Stack Engineer -->
+      <div class="timeline-item" data-aos="fade-right" data-aos-delay="50">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Full-Stack Engineer</h5>
+            <h6 class="card-subtitle mb-2 text-muted">OurFreedom.ai | Remote, New York</h6>
+            <p class="card-text"><strong>Jan 2025 - Present</strong></p>
+            <ul class="card-text">
+              <li>Built a complete <strong>social graph system</strong> (follow/block/private profiles) using <strong>NestJS, MongoDB, and TypeScript</strong>, with 8 mobile screens in <strong>React Native/Expo</strong>.</li>
+              <li>Designed privacy-aware backend services with dependency injection across Profiles, Blocks, and Follows modules - handled bidirectional relationship cleanup and type-safe API responses.</li>
+              <li>Integrated <strong>Twilio Voice SDK</strong> for real-time communication, built token endpoints with JWT auth, and fixed race conditions in the voice provider.</li>
+              <li>Created account management features and optimized search using <strong>MongoDB aggregation</strong>, with automatic profile creation during registration.</li>
+              <li>Built content moderation endpoints with validation and admin logging, ensuring <strong>99.9% API uptime</strong> for 100K+ social relationships.</li>
+              <li>Fixed critical routing issues, removed debug code, integrated UI components with <strong>LinearGradient and SafeAreaView</strong> optimizations.</li>
+              <li>Conduct code reviews, manage deployments and CI/CD using <strong>GitHub Actions and Vercel</strong>, and lead PR reviews across the team.</li>
+              <li>Reduced profile loading time by <strong>60%</strong> through optimized data fetching and cut support tickets by <strong>95%</strong> with automated profile management.</li>
+              <li>Delivered end-to-end features from design to production in <strong>3-week sprints</strong> with zero security incidents.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
 
 
       <!-- Graduate Research Assistant -->
@@ -29,14 +44,14 @@
           <div class="card-body">
             <h5 class="card-title">Graduate Research Assistant, AI & Healthcare</h5>
             <h6 class="card-subtitle mb-2 text-muted">Department of Computer Science | University of Massachusetts Lowell, USA</h6>
-            <p class="card-text"><strong>Jan 2024 – Present</strong></p>
+            <p class="card-text"><strong>Jan 2024 - August 2025</strong></p>
             <ul class="card-text">
-              <li>Built an LLM-based biomedical NLP pipeline to predict <strong>15 Social Determinants of Health (SDoH)</strong> categories on a 0 to 3 ordinal scale from <strong>2,636 opioid-related clinical notes</strong>.</li>
-              <li>Fine-tuned <strong>Clinical Longformer</strong>, <strong>DeepSeek-R1</strong>, and <strong>LLaMA 3.2</strong> models with CORN heads and hybrid <strong>CEM-ORD + CE loss</strong> functions.</li>
-              <li>Achieved <strong>92.6% ±1 accuracy</strong> and <strong>MAE = 0.235</strong>, while implementing entropy-based active learning and <strong>token-level explainability</strong> using Captum.</li>
-              <li>Worked with clinicians to validate model predictions (κ = 0.72 inter-annotator agreement), ensuring results were medically interpretable.</li>
-              <li>Built production-ready preprocessing, annotation quality assurance, and benchmarking pipelines using <strong>PyTorch, Hugging Face, and CUDA</strong>.</li>
-              <li>Co-authored research manuscripts, contributed to grant proposals, and presented findings at AI and Healthcare symposiums.</li>
+              <li>Built an LLM-based pipeline to predict <strong>15 Social Determinants of Health (SDoH)</strong> categories from <strong>2,636 opioid-related clinical notes</strong>, using a 0-3 severity scale.</li>
+              <li>Fine-tuned <strong>Clinical Longformer</strong>, <strong>DeepSeek-R1</strong>, and <strong>LLaMA 3.2</strong> models with specialized ordinal regression techniques.</li>
+              <li>Hit <strong>92.6% accuracy</strong> with <strong>MAE of 0.235</strong>, and added entropy-based active learning plus <strong>token-level explainability</strong> using Captum.</li>
+              <li>Worked directly with clinicians to validate predictions and make sure the results actually made medical sense (reached 0.72 inter-annotator agreement).</li>
+              <li>Built production-ready pipelines for preprocessing, quality checks, and benchmarking using <strong>PyTorch, Hugging Face, and CUDA</strong>.</li>
+              <li>Co-authored research papers, helped with grant proposals, and presented at AI and Healthcare conferences.</li>
             </ul>
           </div>
         </div>
@@ -49,16 +64,16 @@
           <div class="card-body">
             <h5 class="card-title">Graduate Assistant, Software Development & Data Automation</h5>
             <h6 class="card-subtitle mb-2 text-muted">Dean's Office | Manning School of Business, UMass Lowell, USA</h6>
-            <p class="card-text"><strong>May 2024 – Present</strong></p>
+            <p class="card-text"><strong>May 2024 - August 2025</strong></p>
             <ul class="card-text">
-              <li>Fine-tuned <strong>BERT-based transformers</strong> for regression tasks and <strong>instruction-tuned GPT models</strong> to automate academic advising workflows.</li>
-              <li>Built and deployed a <strong>GPT-based advising chatbot</strong> connected to student data, and created custom Tableau dashboards for predictive analytics.</li>
-              <li>Automated grading workflows using <strong>Dockerized Python UnitTest scripts</strong> on Linux, integrated directly with the LMS.</li>
-              <li>Designed a GUI framework with <strong>PySide6</strong> to simplify access to internal reporting pipelines and analytics tools.</li>
-              <li>Led website and data operations for <strong>Manning Industry Days</strong>, coordinating over 100 speakers, building dashboards with <strong>Tableau Prep</strong>, and automating reporting with Google Apps Script.</li>
-              <li>Developed an <strong>image-enhancement tool</strong> for speaker photos using the <strong>Real-ESRGAN</strong> library.</li>
-              <li>Implemented <strong>web scraping and browser automation</strong> with Selenium, and improved the alumni data pipeline by integrating an <strong>instruction-tuned LLM</strong>.</li>
-              <li>Championed user-friendly, low-code solutions through Tableau Prep and Google Sheets automation, helping staff focus on higher-value tasks.</li>
+              <li>Fine-tuned <strong>BERT models</strong> for regression and <strong>GPT models</strong> to automate academic advising workflows.</li>
+              <li>Built and deployed a <strong>GPT-powered advising chatbot</strong> that pulls from student data, plus custom Tableau dashboards for analytics.</li>
+              <li>Automated grading with <strong>Dockerized Python scripts</strong> on Linux, hooked straight into the LMS.</li>
+              <li>Built a GUI with <strong>PySide6</strong> to make internal reporting and analytics tools easier to use.</li>
+              <li>Led web and data ops for <strong>Manning Industry Days</strong>, coordinating 100+ speakers, building dashboards in <strong>Tableau Prep</strong>, and automating reports with Google Apps Script.</li>
+              <li>Made an <strong>image-enhancement tool</strong> for speaker photos using <strong>Real-ESRGAN</strong>.</li>
+              <li>Set up <strong>web scraping and browser automation</strong> with Selenium, and improved our alumni data pipeline using an <strong>instruction-tuned LLM</strong>.</li>
+              <li>Pushed for low-code, user-friendly solutions with Tableau Prep and Google Sheets to help staff focus on what really matters.</li>
             </ul>
           </div>
         </div>
@@ -69,17 +84,17 @@
       <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Technology Analyst, Pega Decisioning (Module Lead)</h5>
+            <h5 class="card-title">Senior Software Engineer, Pega Decisioning (Module Lead)</h5>
             <h6 class="card-subtitle mb-2 text-muted">Infosys Ltd. | Client: Verizon, Hyderabad, India</h6>
-            <p class="card-text"><strong>Aug 2022 – Aug 2023</strong></p>
+            <p class="card-text"><strong>Aug 2022 - Aug 2023</strong></p>
             <ul class="card-text">
-              <li>Led the <strong>Publish Module</strong>, a core component of Verizon's <strong>Pega Decisioning Hub / CDH platform</strong> that handles offer creation, validation, and deployment.</li>
-              <li>Designed REST integrations connecting a <strong>ReactJS UI</strong> to the Pega backend and built <strong>agent-driven automations</strong> for offer publishing.</li>
-              <li>Created <strong>Kibana utilities</strong> to consolidate OOTB and custom API logs, making debugging faster and more accurate.</li>
-              <li>Improved system throughput by <strong>20%</strong> through optimized queue processors and better error-handling logic.</li>
-              <li>Fixed a high-impact production outage caused by a version upgrade, then implemented a permanent solution with redundancy safeguards.</li>
-              <li>Collaborated directly with Verizon's senior architects on design frameworks and reliability improvements.</li>
-              <li>Mentored a <strong>4-member onshore/offshore team</strong> and coordinated Agile sprint deliverables. <strong>Promoted twice</strong> for leadership and strong performance.</li>
+              <li>Led the <strong>Publish Module</strong>, a critical piece of Verizon's <strong>Pega Decisioning Hub</strong> that handles offer creation, validation, and deployment.</li>
+              <li>Built REST integrations between a <strong>ReactJS frontend</strong> and the Pega backend, plus <strong>agent-driven automations</strong> for publishing offers.</li>
+              <li>Created <strong>Kibana utilities</strong> to pull together all API logs in one place, which made debugging way faster.</li>
+              <li>Boosted system throughput by <strong>20%</strong> by optimizing queue processors and improving error handling.</li>
+              <li>Resolved a major production outage after a version upgrade, then put in place permanent safeguards to prevent it from happening again.</li>
+              <li>Worked closely with Verizon's senior architects on system design and reliability.</li>
+              <li>Mentored a <strong>4-person team</strong> across time zones and coordinated Agile sprints. Got <strong>promoted twice</strong> for performance and leadership.</li>
             </ul>
           </div>
         </div>
@@ -90,15 +105,15 @@
       <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Associate Business Analyst, Pega Developer</h5>
+            <h5 class="card-title">Software Engineer, Pega Developer</h5>
             <h6 class="card-subtitle mb-2 text-muted">Infosys Ltd. | Client: Verizon, Hyderabad, India</h6>
-            <p class="card-text"><strong>Dec 2020 – Aug 2022</strong></p>
+            <p class="card-text"><strong>Dec 2020 - Aug 2022</strong></p>
             <ul class="card-text">
-              <li>Developed and optimized case types, decision tables, declarative rules, and REST/SOAP components in <strong>Pega 8.x</strong>.</li>
-              <li>Automated workflows using agents, queue processors, and job schedulers, which boosted deployment stability by <strong>30%</strong>.</li>
-              <li>Built utilities for <strong>Oracle SQL synchronization</strong> and API monitoring using <strong>Kibana dashboards</strong>.</li>
-              <li>Helped resolve cross-module bugs, volunteered for critical issue triage, and earned early recognition for reliability and ownership.</li>
-              <li>Played a key role in developing the <strong>Publish Module</strong> and supported multiple teams working on offer creation and decisioning subsystems.</li>
+              <li>Built and optimized case types, decision tables, rules, and REST/SOAP components in <strong>Pega 8.x</strong>.</li>
+              <li>Automated workflows with agents, queue processors, and schedulers - improved deployment stability by <strong>30%</strong>.</li>
+              <li>Built utilities for <strong>Oracle SQL sync</strong> and API monitoring with <strong>Kibana dashboards</strong>.</li>
+              <li>Jumped on cross-module bugs, volunteered for critical issues, and got recognized early for reliability.</li>
+              <li>Played a key role building the <strong>Publish Module</strong> and helped out multiple teams on offer creation and decisioning.</li>
             </ul>
           </div>
         </div>
@@ -111,10 +126,10 @@
           <div class="card-body">
             <h5 class="card-title">Undergraduate Research & Early Work</h5>
             <h6 class="card-subtitle mb-2 text-muted">K L University | Vijayawada, India</h6>
-            <p class="card-text"><strong>2019 – 2020</strong></p>
+            <p class="card-text"><strong>2019 - 2020</strong></p>
             <ul class="card-text">
-              <li>Worked on <strong>Home Automation systems</strong> using IoT microcontrollers and published a paper on smart-home intelligence and control systems.</li>
-              <li>Gained hands-on experience with embedded systems, IoT protocols, and cloud data interfacing, which sparked my interest in <strong>AI and Automation</strong>.</li>
+              <li>Worked on <strong>Home Automation</strong> with IoT microcontrollers and published a paper on smart-home systems.</li>
+              <li>Got hands-on with embedded systems, IoT protocols, and cloud interfaces - that's what got me interested in <strong>AI and Automation</strong>.</li>
             </ul>
           </div>
         </div>

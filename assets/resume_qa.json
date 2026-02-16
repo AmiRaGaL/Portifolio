@@ -4,47 +4,450 @@
     "email": "devasai1259@gmail.com",
     "phone": "+1 (978) 942-1632",
     "location": "Lowell, MA",
+    "work_authorization": "F-1 OPT (started Sep 15, 2025)",
+    "linkedin": "https://www.linkedin.com/in/deva-sai-kumar-bheesetti-34380812b",
+    "portfolio": "https://portfolio-deva-sai.vercel.app",
+    "github": "https://github.com/AmiRaGaL",
     "summary": "Full‑stack software engineer & AI/ML engineer with ~5 years combined experience (3 industry + 2 research). Strong in Python/JS, FastAPI, AWS, Docker/K8s, LLMs (Hugging Face, Longformer, LLaMA), and Pega Decisioning (CSSA, CPDC). MS CS at UMass Lowell (GPA 3.94).",
-    "top_skills": [
-      "Python",
-      "JavaScript",
-      "FastAPI",
-      "Docker",
-      "Kubernetes",
-      "AWS",
-      "PyTorch",
-      "Hugging Face",
-      "LangChain",
-      "Tableau/Power BI",
-      "PostgreSQL/MySQL",
-      "Airflow",
-      "Kafka",
-      "Pega Decisioning, CDH, Next-Best-Action",
-      "REST APIs",
-      "CI/CD (GitHub Actions, Jenkins)"
-    ],
-    "education": [
-      {
-        "degree": "MS Computer Science",
-        "school": "UMass Lowell",
-        "years": "Aug 2023 – Aug 2025",
-        "gpa": "3.94"
-      },
-      {
-        "degree": "BTech ECE",
-        "school": "K L University",
-        "years": "2016 – 2020",
-        "gpa": "3.52"
-      }
-    ],
-    "certs": [
-      "CSSA",
-      "CPDC",
-      "IBM Data Science Professional",
-      "Google IT Automation with Python",
-      "Applied AI (Hugging Face)"
+    "target_roles": [
+      "AI/ML Engineer",
+      "Data Scientist",
+      "Full-Stack Software Engineer",
+      "Machine Learning Engineer",
+      "Backend Engineer (Python/Node.js)"
     ]
   },
+  "education": [
+    {
+      "degree": "MS Computer Science",
+      "school": "University of Massachusetts Lowell",
+      "location": "Lowell, MA",
+      "years": "Aug 2023 – Aug 2025",
+      "gpa": "3.94",
+      "relevant_coursework": [
+        "Machine Learning",
+        "Natural Language Processing",
+        "Computation in Health and Medicine",
+        "Human-AI Interaction"
+      ]
+    },
+    {
+      "degree": "BTech Electronics & Communication Engineering",
+      "school": "K L University",
+      "location": "India",
+      "years": "2016 – 2020",
+      "gpa": "3.52"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Full-Stack Software Engineer",
+      "company": "OurFreedom.ai",
+      "location": "Remote (New York)",
+      "duration": "Jan 2025 – Present",
+      "key_achievements": [
+        "Architected complete social graph system (follow/block/private profiles) using NestJS, MongoDB, TypeScript",
+        "Reduced profile loading time by 60% through optimized data fetching and response structure",
+        "Built 8 mobile screens in React Native/Expo with Zustand state management",
+        "Implemented Twilio Voice SDK integration with JWT token management",
+        "Developed content moderation system with 99.9% uptime serving 100K+ social relationships",
+        "Eliminated 95% of support tickets via automated profile registration hooks"
+      ],
+      "technologies": [
+        "NestJS",
+        "MongoDB",
+        "React Native",
+        "TypeScript",
+        "Expo Router",
+        "Zustand",
+        "Twilio Voice SDK",
+        "AWS EC2",
+        "REST APIs",
+        "GitHub Actions",
+        "Docker"
+      ]
+    },
+    {
+      "title": "Data Science Intern",
+      "company": "Manning School of Business, UMass Lowell",
+      "location": "Lowell, MA",
+      "duration": "Oct 2025 – Present",
+      "key_achievements": [
+        "Analyzed LinkedIn profiles, enrollment records, and student engagement datasets",
+        "Created interactive dashboards using Tableau, Power BI, Excel, and Python",
+        "Performed statistical analysis and predictive modeling for student/alumni outcomes",
+        "Conducted data cleaning, preprocessing, and EDA using Jupyter Notebooks"
+      ],
+      "technologies": [
+        "Tableau",
+        "Power BI",
+        "Python",
+        "Pandas",
+        "Scikit-learn",
+        "Matplotlib",
+        "Excel"
+      ]
+    },
+    {
+      "title": "Graduate Research Assistant – AI in Healthcare",
+      "company": "Department of Computer Science, UMass Lowell",
+      "location": "Lowell, MA",
+      "duration": "Jan 2024 – Aug 2025",
+      "key_achievements": [
+        "Built end-to-end NLP pipeline predicting 15 SDoH categories from 2,636 opioid clinical notes",
+        "Achieved 92.6% ±1 ordinal accuracy, 82.4% exact match, MAE 0.235 vs. clinician annotations",
+        "Fine-tuned Clinical Longformer, DeepSeek-R1, LLaMA 3.2 with CORN heads and CEM-ORD hybrid loss",
+        "Implemented entropy-based active learning improving rare-class calibration",
+        "Built token-level explainability with Captum Integrated Gradients and LIME",
+        "Co-authored research manuscripts and grant proposals"
+      ],
+      "technologies": [
+        "PyTorch",
+        "Hugging Face Transformers",
+        "CUDA",
+        "Captum",
+        "LIME",
+        "Clinical Longformer"
+      ]
+    },
+    {
+      "title": "Graduate Assistant – Software Development & Data Automation",
+      "company": "Dean's Office, Manning School of Business, UMass Lowell",
+      "location": "Lowell, MA",
+      "duration": "May 2024 – Aug 2025",
+      "key_achievements": [
+        "Reduced manual workload by 70% through FastAPI + Apps Script automations",
+        "Fine-tuned BERT-based regressors for academic analysis",
+        "Created GPT-based advising assistant with personalized student guidance",
+        "Built predictive Tableau dashboards for event attendance forecasting",
+        "Managed Industry Days web/data operations for 100+ speakers (Tridion SDL, Tableau Prep)",
+        "Enhanced low-resolution images using RealESRGAN for event materials"
+      ],
+      "technologies": [
+        "FastAPI",
+        "Google Apps Script",
+        "BERT",
+        "GPT",
+        "Tableau Prep",
+        "Selenium",
+        "RealESRGAN",
+        "Docker",
+        "Python",
+        "Tridion SDL"
+      ]
+    },
+    {
+      "title": "Technology Analyst (Module Lead) – Pega Decisioning",
+      "company": "Infosys Ltd. (Client: Verizon)",
+      "location": "Hyderabad, India",
+      "duration": "Aug 2022 – Aug 2023",
+      "key_achievements": [
+        "Led Publish Module (core of Verizon's Pega Offer Management platform)",
+        "Improved system throughput by ~20% via optimized queue processors and async orchestration",
+        "Built REST API integrations connecting ReactJS frontend with Pega Decisioning Hub",
+        "Designed agent-driven automations for offer creation, validation, and migration",
+        "Developed Kibana utilities unifying logging of custom and OOB APIs",
+        "Resolved critical production outages including rule-class mismatches after Pega upgrades",
+        "Mentored 4-member cross-functional team (2 onshore, 2 offshore)",
+        "Promoted twice within two years for leadership and technical expertise"
+      ],
+      "technologies": [
+        "Pega Decisioning",
+        "Pega CDH",
+        "REST/SOAP APIs",
+        "ReactJS",
+        "Oracle SQL",
+        "Kibana",
+        "Postman",
+        "Agile/Scrum"
+      ]
+    },
+    {
+      "title": "Associate Business Analyst (Pega Developer)",
+      "company": "Infosys Ltd. (Client: Verizon)",
+      "location": "Hyderabad, India",
+      "duration": "Dec 2020 – Aug 2022",
+      "key_achievements": [
+        "Developed case types, decision tables, and business flows for marketing offer lifecycle",
+        "Automated repetitive processes with declarative rules, agents, schedulers (30% productivity gain)",
+        "Designed reusable REST/SOAP APIs for Oracle SQL database integration",
+        "Monitored API traffic via Kibana for operational visibility",
+        "Debugged issues across environments using SQL, Postman, and Pega tools"
+      ],
+      "technologies": [
+        "Pega",
+        "Oracle SQL",
+        "REST/SOAP APIs",
+        "Kibana",
+        "Postman"
+      ]
+    }
+  ],
+  "skills": {
+    "programming_languages": [
+      "Python",
+      "JavaScript/TypeScript",
+      "SQL",
+      "Java",
+      "Bash",
+      "C++",
+      "R"
+    ],
+    "frameworks_libraries": [
+      "FastAPI",
+      "Flask",
+      "NestJS",
+      "Node.js",
+      "ReactJS",
+      "React Native",
+      "Expo",
+      "PyTorch",
+      "TensorFlow",
+      "Scikit-learn",
+      "Hugging Face Transformers",
+      "LangChain",
+      "Pandas",
+      "NumPy"
+    ],
+    "cloud_devops": [
+      "AWS (S3, EC2, Lambda, SageMaker, SNS, Glue)",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "GitHub Actions",
+      "Jenkins"
+    ],
+    "ml_ai": [
+      "LLMs (LLaMA, DeepSeek, GPT, Gemini)",
+      "Clinical Longformer",
+      "BERT",
+      "Fine-tuning",
+      "RAG",
+      "CORN ordinal regression",
+      "Active Learning",
+      "Captum",
+      "LIME",
+      "CUDA",
+      "XGBoost",
+      "LightGBM",
+      "CatBoost"
+    ],
+    "data_tools": [
+      "Tableau",
+      "Power BI",
+      "Matplotlib",
+      "Seaborn",
+      "Plotly",
+      "Streamlit",
+      "Grafana",
+      "Airflow",
+      "Kafka"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle SQL",
+      "MongoDB",
+      "Firebase",
+      "Supabase"
+    ],
+    "automation_scripting": [
+      "Google Apps Script",
+      "Selenium",
+      "BeautifulSoup",
+      "ETL pipelines",
+      "Web scraping"
+    ],
+    "pega_enterprise": [
+      "Pega Decisioning",
+      "Pega CDH",
+      "Next-Best-Action",
+      "Case Management",
+      "Process Management"
+    ],
+    "other": [
+      "REST/SOAP APIs",
+      "Twilio Voice SDK",
+      "Zustand",
+      "PySide6",
+      "Git"
+    ]
+  },
+  "certifications": [
+    "Certified Pega Senior System Architect (CSSA)",
+    "Certified Pega Decision Consultant (CPDC)",
+    "Certified Pega System Architect (CSA)",
+    "IBM Data Science Professional",
+    "Google IT Automation with Python",
+    "Applied AI: Building NLP Apps with Hugging Face Transformers",
+    "AWS Certified Cloud Practitioner (CLF-C02 Cert Prep)"
+  ],
+  "projects": [
+    {
+      "name": "VitaScan – AI-Powered Symptom Checker",
+      "description": "AI-powered health assistant with evidence-backed medical triage using RAG",
+      "technologies": [
+        "Next.js",
+        "React Native",
+        "NestJS",
+        "Supabase",
+        "PostgreSQL",
+        "pgvector",
+        "OpenAI/Gemini",
+        "LangChain",
+        "Vercel",
+        "Render"
+      ],
+      "highlights": [
+        "Built triage system with RAG retrieving CDC/WHO/NHS medical knowledge",
+        "Implemented row-level security for HIPAA-aligned data protection",
+        "Created personalized recipe recommendations via vector similarity search",
+        "Deployed on free/hobby tiers (Vercel, Render, Supabase)"
+      ]
+    },
+    {
+      "name": "Multi-Label Ordinal SDoH Prediction (Thesis)",
+      "description": "Framework predicting care severity for opioid patients from clinical notes",
+      "technologies": [
+        "PyTorch",
+        "Clinical Longformer",
+        "DeepSeek-R1",
+        "LLaMA 3.2",
+        "CORN",
+        "CEM-ORD",
+        "Captum",
+        "LIME",
+        "CUDA"
+      ],
+      "highlights": [
+        "92.6% ±1 ordinal accuracy, 82.4% exact match, MAE 0.235",
+        "Entropy-based active learning for rare-class calibration",
+        "Token-level explainability with clinician validation",
+        "Published research manuscripts and grant proposals"
+      ]
+    },
+    {
+      "name": "Code Review Assistant",
+      "description": "Fine-tuned CodeLLaMA/DeepSeek-Coder to analyze PRs via GitHub Actions",
+      "technologies": [
+        "CodeLLaMA",
+        "DeepSeek-Coder",
+        "GitHub Actions",
+        "Python"
+      ],
+      "highlights": [
+        "Automated PR analysis with targeted code comments"
+      ]
+    },
+    {
+      "name": "Personal Knowledge Assistant",
+      "description": "Private RAG system for Q&A over local documents",
+      "technologies": [
+        "LangChain",
+        "Chroma",
+        "Streamlit",
+        "Python"
+      ],
+      "highlights": [
+        "Offline/local Q&A over notes and PDFs"
+      ]
+    },
+    {
+      "name": "NeuroHandSim – Brain-Controlled Virtual Hand",
+      "description": "BCI system using MUSE EEG sensors for real-time hand gesture control",
+      "technologies": [
+        "PyTorch/TensorFlow",
+        "MUSE SDK",
+        "EEG Processing",
+        "3D Simulation"
+      ],
+      "highlights": [
+        "Deep learning for EEG→gesture classification",
+        "Real-time neural control"
+      ]
+    },
+    {
+      "name": "MURA-Classification – X-ray Abnormality Detection",
+      "description": "Automated musculoskeletal abnormality detection from X-rays",
+      "technologies": [
+        "DenseNet201",
+        "VGG16",
+        "TensorFlow/Keras",
+        "GradCAM",
+        "Streamlit"
+      ],
+      "highlights": [
+        "High accuracy with GradCAM interpretability",
+        "Real-time clinical inference"
+      ]
+    },
+    {
+      "name": "AIOps Monitoring System",
+      "description": "Time-series forecasting and anomaly detection for infrastructure",
+      "technologies": [
+        "LSTM",
+        "Prophet",
+        "AWS SNS",
+        "Streamlit",
+        "Grafana"
+      ],
+      "highlights": [
+        "Predictive alerts and real-time dashboards"
+      ]
+    },
+    {
+      "name": "AI-Integrated Discord Bot",
+      "description": "Conversational bot with RAG for community engagement",
+      "technologies": [
+        "Node.js",
+        "Python",
+        "Groq API",
+        "LangChain"
+      ],
+      "highlights": [
+        "Role assignment, contextual Q&A, local LLM inference"
+      ]
+    },
+    {
+      "name": "Human Activity Recognition with Fall Detection",
+      "description": "Ensemble ML model deployed to Raspberry Pi with AWS notifications",
+      "technologies": [
+        "RGB-Pose",
+        "Raspberry Pi",
+        "AWS SNS",
+        "Python"
+      ],
+      "highlights": [
+        "Real-time fall detection with email alerts"
+      ]
+    },
+    {
+      "name": "Industry Days 2025 Event Management",
+      "description": "Web/data operations for 100+ speaker university event",
+      "technologies": [
+        "Tridion SDL",
+        "Tableau Prep",
+        "Google Apps Script",
+        "Selenium",
+        "RealESRGAN"
+      ],
+      "highlights": [
+        "Automated reporting, speaker data scraping, image enhancement"
+      ]
+    }
+  ],
+  "highlights": [
+    "92.6% ±1 ordinal accuracy, 82.4% exact match, MAE 0.235 (Healthcare NLP thesis)",
+    "Reduced profile loading time by 60% (OurFreedom.ai social platform)",
+    "Improved throughput by ~20% via queue processor optimization (Verizon Pega)",
+    "Reduced inference latency by ~30% using CUDA and dynamic batching",
+    "Eliminated 95% of support tickets via automated registration hooks",
+    "Reduced manual workload by 70% through FastAPI + Apps Script automations",
+    "Led Publish Module with 4-member team; built REST integrations for Pega Hub",
+    "Promoted twice within 2 years for leadership and technical excellence",
+    "Zero security incidents with 99.9% uptime serving 100K+ social relationships"
+  ],
   "qa": [
     {
       "q": "What roles are you targeting?",
@@ -76,7 +479,7 @@
     },
     {
       "q": "Any throughput wins?",
-      "a": "Improved system throughput by ~20% via optimized queue processors and async orchestration in Verizon’s Pega Decisioning Hub."
+      "a": "Improved system throughput by ~20% via optimized queue processors and async orchestration in Verizon's Pega Decisioning Hub."
     },
     {
       "q": "Any latency wins?",
@@ -107,7 +510,7 @@
       "a": "CSSA, CPDC (also CSA earlier)."
     },
     {
-      "q": "Databases you’ve used?",
+      "q": "Databases you've used?",
       "a": "PostgreSQL, MySQL, Oracle SQL; some MongoDB/Firebase."
     },
     {
@@ -141,13 +544,206 @@
     {
       "q": "Contact info?",
       "a": "devasai1259@gmail.com | +1 (978) 942-1632 | Lowell, MA"
+    },
+    {
+      "q": "Tell me about your OurFreedom.ai role.",
+      "a": "Full‑stack engineer architecting social networking features (follow/block/privacy), voice SDK integration, and content moderation using NestJS, MongoDB, React Native."
+    },
+    {
+      "q": "What performance improvements did you achieve at OurFreedom.ai?",
+      "a": "Reduced profile loading time by 60% through optimized data fetching and eliminated 95% of support tickets via automated registration hooks."
+    },
+    {
+      "q": "Describe your VitaScan project.",
+      "a": "AI‑powered symptom checker with Next.js/React Native, NestJS backend, Supabase PostgreSQL with pgvector RAG, providing evidence‑backed medical triage using OpenAI/Gemini LLMs."
+    },
+    {
+      "q": "What privacy features did you build?",
+      "a": "Complete social graph system with follow/block/private profiles, row‑level security policies, and privacy‑aware APIs ensuring 99.9% uptime and zero security incidents."
+    },
+    {
+      "q": "Experience with voice/real‑time systems?",
+      "a": "Implemented Twilio Voice SDK integration with JWT token management, fixed authentication flows, and enabled concurrent voice communication for thousands of users."
+    },
+    {
+      "q": "What is your thesis about?",
+      "a": "Multi‑label ordinal modeling for Social Determinants of Health prediction from 2,636 opioid clinical notes using Clinical Longformer, CORN heads, and CEM‑ORD hybrid loss."
+    },
+    {
+      "q": "Active learning methodology?",
+      "a": "Entropy‑based sampling selected top‑100 uncertain samples for re‑annotation, improving rare‑class calibration and model confidence."
+    },
+    {
+      "q": "Model explainability techniques?",
+      "a": "Token‑level attributions via Captum Integrated Gradients and LIME, with clinician review loops validating predictions for healthcare interpretability."
+    },
+    {
+      "q": "What models did you fine‑tune?",
+      "a": "Clinical Longformer, DeepSeek‑R1, LLaMA 3.2 for healthcare NLP; BERT regressors for academic analysis; CodeLLaMA/DeepSeek‑Coder for code review."
+    },
+    {
+      "q": "Healthcare AI impact?",
+      "a": "Achieved 92.6% ±1 ordinal accuracy, 82.4% exact match vs. clinician annotations, MAE 0.235; advanced biomedical NLP for opioid care decision support."
+    },
+    {
+      "q": "Dean's Office automation impact?",
+      "a": "Reduced manual workload by 70% through FastAPI + Apps Script automations, automated grading, and data‑driven event planning dashboards."
+    },
+    {
+      "q": "Industry Days event management?",
+      "a": "Managed web/data ops for 100+ speakers using Tridion SDL, Tableau Prep, Google Apps Script; automated reporting, scraped data with Selenium, enhanced images with RealESRGAN."
+    },
+    {
+      "q": "Web scraping and data collection?",
+      "a": "Built pipelines using instruction‑tuned LLMs for alumni data, Selenium for speaker details, BeautifulSoup for AACSB forms; integrated with Google Sheets/Apps Script."
+    },
+    {
+      "q": "Computer vision projects?",
+      "a": "MURA X‑ray abnormality detection (DenseNet201/VGG16 with GradCAM), fall detection with RGB‑Pose on Raspberry Pi, RealESRGAN image enhancement for events."
+    },
+    {
+      "q": "Brain‑computer interface work?",
+      "a": "NeuroHandSim: real‑time EEG signal processing from MUSE sensors, deep learning gesture classification, 3D hand simulation control for assistive technology."
+    },
+    {
+      "q": "Mobile development experience?",
+      "a": "Built 8 React Native/Expo screens (settings, blocked users, profile actions), VitaScan mobile app, optimistic UI with Zustand, Expo Router navigation."
+    },
+    {
+      "q": "Backend architecture skills?",
+      "a": "NestJS microservices with dependency injection, FastAPI typed APIs, REST/SOAP integrations, MongoDB aggregations, PostgreSQL with pgvector RAG."
+    },
+    {
+      "q": "Testing and deployment practices?",
+      "a": "Docker‑based CI scripts for grading automation, GitHub Actions/Jenkins pipelines, test coverage maintenance, Linux server deployments, Vercel/Render hosting."
+    },
+    {
+      "q": "Data visualization tools?",
+      "a": "Tableau, Power BI, Matplotlib, Seaborn, Plotly, Streamlit, Grafana; built predictive dashboards and real‑time monitoring systems."
+    },
+    {
+      "q": "API design and integration?",
+      "a": "Designed REST/SOAP APIs for Pega‑Oracle sync, ReactJS‑Pega Hub integrations, Twilio Voice endpoints, content moderation, and report logging systems."
+    },
+    {
+      "q": "Monitoring and observability?",
+      "a": "Kibana utilities for API logging/debugging, Grafana dashboards, AWS SNS anomaly alerts, unified logging across custom/OOB APIs."
+    },
+    {
+      "q": "Production support experience?",
+      "a": "Resolved critical outages including rule‑class mismatches after Pega upgrades, managed high‑pressure incidents, coordinated with Verizon architects on error handling."
+    },
+    {
+      "q": "Agile and team collaboration?",
+      "a": "Supported agile operations, deployments, pipeline config; led PR reviews, task assignments, unblocked teammates, maintained branch stability across repos."
+    },
+    {
+      "q": "Automation achievements?",
+      "a": "30% productivity gain via Pega declarative rules/agents/schedulers; 70% manual reduction with GPT+Selenium for AACSB forms; automated offer migration workflows."
+    },
+    {
+      "q": "RAG and vector search?",
+      "a": "Implemented pgvector in Supabase for medical knowledge retrieval (CDC/WHO/NHS), LangChain+Chroma for personal knowledge Q&A over notes/PDFs."
+    },
+    {
+      "q": "LLM fine‑tuning experience?",
+      "a": "Instruction fine‑tuning for Discord bot RAG, web scraping, code review; CORN heads for ordinal regression; BERT for academic regressors."
+    },
+    {
+      "q": "Education background?",
+      "a": "MS Computer Science, UMass Lowell (GPA 3.94, Aug 2023–Aug 2025); BTech ECE, K L University (GPA 3.52, 2016–2020)."
+    },
+    {
+      "q": "Work authorization status?",
+      "a": "F‑1 OPT started September 15, 2025; authorized to work in the US."
+    },
+    {
+      "q": "All certifications?",
+      "a": "CSSA, CPDC, CSA (Pega); IBM Data Science Professional; Google IT Automation with Python; Applied AI (Hugging Face); AWS Cloud Practitioner CLF‑C02 Cert Prep."
+    },
+    {
+      "q": "Promotion history?",
+      "a": "Promoted twice within two years at Infosys: Associate Business Analyst (Dec 2020–Aug 2022) → Technology Analyst Module Lead (Aug 2022–Aug 2023)."
+    },
+    {
+      "q": "Cross‑functional collaboration?",
+      "a": "Coordinated with Verizon architects, clinicians for healthcare AI, faculty for Dean's Office projects, onshore/offshore teams for Pega modules."
+    },
+    {
+      "q": "Time‑series forecasting?",
+      "a": "LSTM/Prophet models for AIOps monitoring with anomaly detection, predictive attendance dashboards for Industry Days events."
+    },
+    {
+      "q": "State management patterns?",
+      "a": "Zustand for optimistic UI updates in React Native, context‑aware session management, logout race condition fixes."
+    },
+    {
+      "q": "Security and privacy engineering?",
+      "a": "Row‑level security in Supabase, JWT authentication, privacy‑aware visibility controls, auto‑unfollow on block, HIPAA‑aligned data protection."
+    },
+    {
+      "q": "Content moderation features?",
+      "a": "POST /api/posts/:id/report endpoint with self‑report prevention, 500‑char reason validation, admin review logging, and privacy controls."
+    },
+    {
+      "q": "Error handling and reliability?",
+      "a": "Built error‑handling utilities with Verizon architects, fixed Twilio token expiration/race conditions, robust validation preventing edge cases."
+    },
+    {
+      "q": "Monorepo and build systems?",
+      "a": "pnpm workspaces for VitaScan monorepo, GitHub Actions CI/CD, Vercel/Render deployments, Docker containerization."
+    },
+    {
+      "q": "UI/UX contributions?",
+      "a": "Fixed routing issues, removed debug buttons/mock data, integrated LinearGradient components, SafeAreaView optimizations for native mobile."
+    },
+    {
+      "q": "Type safety practices?",
+      "a": "TypeScript across NestJS/React Native, type‑safe API responses, proper profile population, eliminated 'Unknown User' issues."
+    },
+    {
+      "q": "Synthetic data generation?",
+      "a": "Generated synthetic samples from informative tokens to handle class imbalance in SDoH prediction for rare ordinal categories."
+    },
+    {
+      "q": "Inter‑annotator agreement?",
+      "a": "Achieved 0.72 IAA with clinicians on SDoH annotations; validated model decisions through review loops."
+    },
+    {
+      "q": "GPU optimization?",
+      "a": "CUDA acceleration for transformer pipelines, dynamic batching reducing inference latency by ~30%, optimized long‑context models."
+    },
+    {
+      "q": "Human activity recognition?",
+      "a": "Ensemble ML model with RGB‑Pose for fall detection, deployed to Raspberry Pi with AWS SNS email notifications for safety monitoring."
+    },
+    {
+      "q": "Image enhancement techniques?",
+      "a": "RealESRGAN for upscaling low‑resolution event photos, GradCAM visualizations for X‑ray abnormality interpretability."
+    },
+    {
+      "q": "Portfolio and web presence?",
+      "a": "https://portfolio-deva-sai.vercel.app (ReactJS); GitHub: https://github.com/AmiRaGaL; LinkedIn: linkedin.com/in/deva-sai-kumar-bheesetti-34380812b"
+    },
+    {
+      "q": "Relevant coursework?",
+      "a": "Machine Learning, Natural Language Processing, Computation in Health and Medicine, Human‑AI Interaction."
+    },
+    {
+      "q": "Research contributions?",
+      "a": "Co‑authored manuscripts on biomedical NLP, grant drafts; produced interpretable ordinal prediction pipeline for healthcare applications."
+    },
+    {
+      "q": "Mentorship and training?",
+      "a": "Mentored 4‑member team on Pega best practices/troubleshooting, guided junior engineers/interns, provided technical reviews."
+    },
+    {
+      "q": "Current role responsibilities?",
+      "a": "OurFreedom.ai (Jan 2025–Present): full‑stack social features, voice SDK, content moderation. Data Science Intern at Manning School (Oct 2025–Present): LinkedIn/enrollment analytics, Tableau dashboards."
+    },
+    {
+      "q": "Sprint and delivery cadence?",
+      "a": "Delivered end‑to‑end features from requirements → design → implementation → production in 3‑week sprint cycles with zero security incidents."
     }
-  ],
-  "highlights": [
-    "92.6% ±1 accuracy, MAE 0.235 (Clinical Longformer, CORN, CEM‑ORD).",
-    "20% throughput gain via queue processors & async orchestration (Verizon Pega CDH).",
-    "30% inference latency reduction via CUDA optimization and dynamic batching.",
-    "70% manual effort reduction via FastAPI + Apps Script automations in Dean’s Office.",
-    "Led Publish Module; REST integrations between ReactJS and Pega Decisioning Hub."
   ]
 }

@@ -2,8 +2,10 @@
 import { chatGroq } from "/js/groq.js";
 
 /* ---------- Debug UI ---------- */
-function log(...a){ console.debug("[ResumeAI]", ...a); }
-function showError(msg){
+function log(...a) {
+  console.debug("[ResumeAI]", ...a);
+}
+function showError(msg) {
   let box = document.getElementById("ai-error-box");
   if (!msg) {
     if (box && box.parentNode) box.parentNode.removeChild(box);
@@ -12,7 +14,8 @@ function showError(msg){
   if (!box) {
     box = document.createElement("div");
     box.id = "ai-error-box";
-    box.style.cssText = "margin:.5rem 0;padding:.5rem;border:1px solid #e11;background:#fee;color:#900;border-radius:.5rem;white-space:pre-wrap;";
+    box.style.cssText =
+      "margin:.5rem 0;padding:.5rem;border:1px solid #e11;background:#fee;color:#900;border-radius:.5rem;white-space:pre-wrap;";
     const out = document.getElementById("answer") || document.body;
     out.parentNode.insertBefore(box, out);
   }
@@ -20,34 +23,38 @@ function showError(msg){
 }
 
 /* ---------- Retrieval ---------- */
-function score(q, qa){
+function score(q, qa) {
   const terms = new Set(String(q).toLowerCase().split(/\W+/).filter(Boolean));
-  return qa.map(x=>{
-    const h=(x.q+" "+x.a).toLowerCase();
-    let s=0; for(const t of terms) if(h.includes(t)) s++;
-    return {...x,_score:s};
-  }).sort((a,b)=>b._score-a._score).slice(0,5);
+  return qa
+    .map((x) => {
+      const h = (x.q + " " + x.a).toLowerCase();
+      let s = 0;
+      for (const t of terms) if (h.includes(t)) s++;
+      return { ...x, _score: s };
+    })
+    .sort((a, b) => b._score - a._score)
+    .slice(0, 5);
 }
-async function getResumeContext(query){
-  try{
-    const r = await fetch("/assets/resume_qa.json", { cache:"no-store" });
-    if(!r.ok) throw new Error(`KB HTTP ${r.status}`);
+async function getResumeContext(query) {
+  try {
+    const r = await fetch("/assets/resume_qa.json", { cache: "no-store" });
+    if (!r.ok) throw new Error(`KB HTTP ${r.status}`);
     const kb = await r.json();
     const top = score(query, kb.qa);
     return [
       `NAME: ${kb.profile.name}`,
       `SUMMARY: ${kb.profile.summary}`,
       `HIGHLIGHTS: ${kb.highlights.join(" | ")}`,
-      `RELEVANT QA: ${top.map(x=>`Q:${x.q} A:${x.a}`).join(" | ")}`
+      `RELEVANT QA: ${top.map((x) => `Q:${x.q} A:${x.a}`).join(" | ")}`,
     ].join("\n");
-  }catch(e){
-    showError(`KB load failed: ${e.message||e}`);
+  } catch (e) {
+    showError(`KB load failed: ${e.message || e}`);
     return "";
   }
 }
 
 /* ---------- Chat core ---------- */
-async function askResumeAI(userPrompt, onToken, model){
+async function askResumeAI(userPrompt, onToken, model) {
   const ctx = await getResumeContext(userPrompt);
   const SYSTEM = `You are Deva Sai Kumar Bheesetti's AI assistant for visitors of his portfolio.
 Speak as the assistant ("I") and refer to Deva by name ("Deva").
@@ -59,97 +66,115 @@ ${ctx}
 --- CONTEXT END ---`;
 
   const messages = [
-    { role:"system", content:SYSTEM },
-    { role:"user", content:userPrompt }
+    { role: "system", content: SYSTEM },
+    { role: "user", content: userPrompt },
   ];
-  log("POST /api/groq-chat", {model, hasCtx:Boolean(ctx)});
+  log("POST /api/groq-chat", { model, hasCtx: Boolean(ctx) });
   return chatGroq(JSON.stringify(messages), onToken, model);
 }
 
 /* ---------- Chat binding ---------- */
 let bound = false;
-function handleSubmit(e, root){
+function handleSubmit(e, root) {
   e?.preventDefault?.();
   e?.stopPropagation?.();
   const form = root.querySelector("#chat-form");
   const input = root.querySelector("#prompt");
   const output = root.querySelector("#answer");
   const modelEl = root.querySelector("#model");
-  if(!form||!input||!output) return;
+  if (!form || !input || !output) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const prompt = input.value.trim();
-  if(!prompt) return;
+  if (!prompt) return;
 
   showError("");
   output.textContent = "";
-  if(submitBtn) submitBtn.disabled = true;
+  if (submitBtn) submitBtn.disabled = true;
 
   const selected = modelEl?.value;
-  const effectiveModel = (selected && selected !== "default") ? selected : undefined;
+  const effectiveModel =
+    selected && selected !== "default" ? selected : undefined;
 
-  const sidKey="resumeAI_sessionId";
-  let sessionId = localStorage.getItem(sidKey) || (crypto.randomUUID?.() || String(Date.now()));
+  const sidKey = "resumeAI_sessionId";
+  let sessionId =
+    localStorage.getItem(sidKey) || crypto.randomUUID?.() || String(Date.now());
   localStorage.setItem(sidKey, sessionId);
 
-  askResumeAI(prompt, (t)=>output.textContent += t, effectiveModel)
-    .then(()=>{
+  askResumeAI(prompt, (t) => (output.textContent += t), effectiveModel)
+    .then(() => {
       // ✅ Save logs with correct field names
       fetch("/api/save-log", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body:JSON.stringify({
-          prompt,                       // expected by API
-          answer: output.textContent,   // expected by API
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt, // expected by API
+          answer: output.textContent, // expected by API
           model: effectiveModel || "default",
-          meta:{ sessionId, path: location.pathname }
-        })
-      }).catch(()=>{});
+          meta: { sessionId, path: location.pathname },
+        }),
+      }).catch(() => {});
     })
-    .catch(err=>{
+    .catch((err) => {
       console.error(err);
       showError(`Chat error: ${err.message}`);
       output.textContent = `Error: ${err.message}`;
     })
-    .finally(()=>{ if(submitBtn) submitBtn.disabled=false; });
+    .finally(() => {
+      if (submitBtn) submitBtn.disabled = false;
+    });
 }
 
-function bindChatOnce(root=document){
-  if(bound) return;
+function bindChatOnce(root = document) {
+  if (bound) return;
   const form = root.querySelector("#chat-form");
   const input = root.querySelector("#prompt");
   const output = root.querySelector("#answer");
   const sendBtn = root.querySelector("#send-btn");
-  const clearBtn= root.querySelector("#clear-chat");
-  if(!form||!input||!output){ log("Chat nodes missing; wait…"); return; }
+  const clearBtn = root.querySelector("#clear-chat");
+  if (!form || !input || !output) {
+    log("Chat nodes missing; wait…");
+    return;
+  }
 
   bound = true;
   log("Binding chat handlers.");
 
-  form.addEventListener("submit", (e)=>handleSubmit(e, root), true);
-  if(sendBtn){
-    sendBtn.addEventListener("click", (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      handleSubmit(e, root);
-    }, true);
+  form.addEventListener("submit", (e) => handleSubmit(e, root), true);
+  if (sendBtn) {
+    sendBtn.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleSubmit(e, root);
+      },
+      true,
+    );
   }
 
   // ✨ Ctrl/Cmd + Enter shortcut
   input.addEventListener("keydown", (e) => {
-    if ((e.key === "Enter") && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault(); e.stopPropagation();
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      e.stopPropagation();
       handleSubmit(e, root);
     }
   });
 
-  if(clearBtn){
-    clearBtn.addEventListener("click", (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      showError("");
-      output.textContent = "";
-      input.value = "";
-      input.focus();
-    }, true);
+  if (clearBtn) {
+    clearBtn.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        showError("");
+        output.textContent = "";
+        input.value = "";
+        input.focus();
+      },
+      true,
+    );
   }
 
   log("Chat ready. (Ctrl+Enter to send)");
@@ -158,7 +183,9 @@ function bindChatOnce(root=document){
 /* ---------- Theme handling ---------- */
 function applySavedTheme() {
   const saved = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
+  const prefersDark = window.matchMedia?.(
+    "(prefers-color-scheme: dark)",
+  )?.matches;
   const useDark = saved ? saved === "dark" : !!prefersDark;
   document.body.classList.toggle("dark-theme", useDark);
   document.documentElement.style.colorScheme = useDark ? "dark" : "light";
@@ -166,7 +193,10 @@ function applySavedTheme() {
 function initTheme() {
   document.documentElement.classList.add("no-theme-transition");
   applySavedTheme();
-  setTimeout(() => document.documentElement.classList.remove("no-theme-transition"), 50);
+  setTimeout(
+    () => document.documentElement.classList.remove("no-theme-transition"),
+    50,
+  );
   const tgl = document.getElementById("theme-toggle");
   if (tgl) {
     tgl.addEventListener("click", () => {
@@ -177,7 +207,10 @@ function initTheme() {
     });
   }
   const mq = window.matchMedia?.("(prefers-color-scheme: dark)");
-  if (mq) mq.addEventListener("change", () => { if (!localStorage.getItem("theme")) applySavedTheme(); });
+  if (mq)
+    mq.addEventListener("change", () => {
+      if (!localStorage.getItem("theme")) applySavedTheme();
+    });
 }
 
 /* ---------- Scroll-to-top arrow ---------- */
@@ -191,27 +224,95 @@ function ensureScrollArrow() {
     btn.innerHTML = "↑";
     document.body.appendChild(btn);
   }
-  const target = document.querySelector("#home, .section.home, section.section:first-of-type");
+  const target = document.querySelector(
+    "#home, .section.home, section.section:first-of-type",
+  );
   btn.addEventListener("click", () => {
-    const top = target ? target.getBoundingClientRect().top + window.scrollY : 0;
+    const top = target
+      ? target.getBoundingClientRect().top + window.scrollY
+      : 0;
     window.scrollTo({ top, behavior: "smooth" });
   });
-  const onScroll = () => btn.classList.toggle("show", window.scrollY > 240);
+
+  // UPDATED: Now toggles 'scroll-active' class on body for chat widget positioning
+  const onScroll = () => {
+    const shouldShow = window.scrollY > 240;
+    btn.classList.toggle("show", shouldShow);
+    document.body.classList.toggle("scroll-active", shouldShow);
+  };
+
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+function initFloatingChatWidget() {
+  const chatButton = document.getElementById("chatButton");
+  const chatPanel = document.getElementById("chatPanel");
+  const closeChat = document.getElementById("closeChat");
+
+  if (!chatButton || !chatPanel || !closeChat) return;
+
+  const open = () => {
+    chatPanel.classList.add("active");
+    chatPanel.setAttribute("aria-hidden", "false");
+  };
+  const close = () => {
+    chatPanel.classList.remove("active");
+    chatPanel.setAttribute("aria-hidden", "true");
+  };
+
+  // show a tiny badge after 3s if chat is still closed
+  const badge = document.getElementById("chatBadge");
+  setTimeout(() => {
+    if (!badge) return;
+    const isOpen = chatPanel.classList.contains("active");
+    if (!isOpen) badge.style.display = "block";
+  }, 3000);
+
+  // Hide badge once user opens chat
+  chatButton.addEventListener("click", () => {
+    if (badge) badge.style.display = "none";
+  });
+
+  chatButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    open();
+  });
+  closeChat.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    close();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      chatPanel.classList.contains("active") &&
+      !chatPanel.contains(e.target) &&
+      !chatButton.contains(e.target)
+    )
+      close();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+}
+
 /* ---------- Init ---------- */
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   ensureScrollArrow();
   bindChatOnce(document);
+  initFloatingChatWidget();
 
-  const mo = new MutationObserver(()=>{ if(!bound) bindChatOnce(document); });
-  mo.observe(document.documentElement, { childList:true, subtree:true });
+  const mo = new MutationObserver(() => {
+    if (!bound) bindChatOnce(document);
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
 
-  window.addEventListener("sections:loaded", ()=>{
+  window.addEventListener("sections:loaded", () => {
     ensureScrollArrow();
-    if(!bound) bindChatOnce(document);
+    if (!bound) bindChatOnce(document);
   });
 });
