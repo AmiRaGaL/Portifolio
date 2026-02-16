@@ -364,7 +364,7 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
   width: 44px;
   height: 44px;
   border-radius: 9999px;
-  display: none; /* Hidden by default */
+  display: none;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-color);
@@ -376,11 +376,9 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
   transition: transform 0.3s ease;
 }
 
-/* Show arrow when it has the 'show' class */
 #scroll-arrow.show {
   display: flex;
 }
-
 #scroll-arrow:hover {
   transform: translateY(-2px);
 }
@@ -390,12 +388,40 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
   outline-offset: 2px;
 }
 
-/* Floating Chat Widget - positioned higher to avoid arrow */
+/* Floating Chat Widget - Default Position (Bottom) */
 .chat-widget {
   position: fixed;
-  bottom: 90px; /* Moved up from 20px to avoid arrow */
+  bottom: 20px;       /* Starts at bottom */
   right: 20px;
   z-index: 2000;
+  transition: bottom 0.3s ease; /* Smooth sliding animation */
+}
+
+/* Chat Panel - Default Position */
+.chat-panel {
+  position: fixed;
+  bottom: 100px;      /* Starts just above the button */
+  right: 20px;
+  width: 400px;
+  height: 600px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  transition: bottom 0.3s ease; /* Smooth sliding animation */
+}
+
+/* --- DYNAMIC POSITIONING --- */
+/* When scroll arrow is visible (body has scroll-active class), move chat UP */
+body.scroll-active .chat-widget {
+  bottom: 90px; /* 20px + 70px clearance */
+}
+
+body.scroll-active .chat-panel {
+  bottom: 170px; /* 100px + 70px clearance */
 }
 
 .chat-button {

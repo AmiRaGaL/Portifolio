@@ -196,7 +196,14 @@ function ensureScrollArrow() {
     const top = target ? target.getBoundingClientRect().top + window.scrollY : 0;
     window.scrollTo({ top, behavior: "smooth" });
   });
-  const onScroll = () => btn.classList.toggle("show", window.scrollY > 240);
+  
+  // UPDATED: Now toggles 'scroll-active' class on body for chat widget positioning
+  const onScroll = () => {
+    const shouldShow = window.scrollY > 240;
+    btn.classList.toggle("show", shouldShow);
+    document.body.classList.toggle("scroll-active", shouldShow);
+  };
+  
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 }
@@ -230,7 +237,6 @@ function initFloatingChatWidget(){
     if(e.key === 'Escape') close();
   });
 }
-
 
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", ()=>{
