@@ -86,10 +86,20 @@
 
 <!-- Floating AI Chat Widget (global, works on all sections) -->
 <div class="chat-widget" id="chat-widget">
-  <button class="chat-button" id="chatButton" type="button" aria-label="Open AI chat">
-    💬
-  </button>
+  <button class="chat-button chat-widget-button" id="chatButton" type="button" aria-label="Open AI chat">
+  <span class="notification-badge" id="chatBadge" aria-hidden="true" style="display:none;"></span>
 
+  <span class="chat-icon" aria-hidden="true">
+    <!-- Chat bubble icon -->
+    <svg viewBox="0 0 24 24" width="28" height="28">
+      <path fill="currentColor"
+        d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3 .97 4.29L2 22l5.71-.97C9 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+      <circle cx="8.5" cy="12" r="1" fill="currentColor"></circle>
+      <circle cx="12" cy="12" r="1" fill="currentColor"></circle>
+      <circle cx="15.5" cy="12" r="1" fill="currentColor"></circle>
+    </svg>
+  </span>
+</button>
   <div class="chat-panel" id="chatPanel" role="dialog" aria-label="AI chat" aria-hidden="true">
     <div class="chat-header">
       <div class="chat-header-content">

@@ -632,3 +632,79 @@ body.dark-theme .chat-panel {
 .chat-widget {
   z-index: 2000;
 }
+
+/* ===== Upgraded attention-grabbing chat button (keeps existing layout/JS) ===== */
+.chat-button.chat-widget-button{
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+}
+
+/* Pulse ring (subtle “look at me” without being loud) */
+.chat-button.chat-widget-button::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  opacity:.55;
+  animation: chatPulseRing 2.2s cubic-bezier(.4,0,.6,1) infinite;
+}
+
+@keyframes chatPulseRing{
+  0%{ transform: scale(1); opacity:.55; }
+  55%{ transform: scale(1.45); opacity:0; }
+  100%{ transform: scale(1.45); opacity:0; }
+}
+
+/* Shimmer sweep */
+.chat-button.chat-widget-button::after{
+  content:"";
+  position:absolute;
+  top:-60%;
+  left:-60%;
+  width:220%;
+  height:220%;
+  background: linear-gradient(45deg, transparent 38%, rgba(255,255,255,.28) 50%, transparent 62%);
+  animation: chatShimmer 3.2s ease-in-out infinite;
+}
+
+@keyframes chatShimmer{
+  0%{ transform: translate(-55%,-55%) rotate(45deg); }
+  100%{ transform: translate(55%,55%) rotate(45deg); }
+}
+
+/* Keep icon above effects */
+.chat-button .chat-icon{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+/* Hover: keep your existing scale, add slight “tilt” */
+.chat-button.chat-widget-button:hover .chat-icon{
+  transform: rotate(6deg) scale(1.08);
+  transition: transform .25s ease;
+}
+
+/* Badge (optional attention dot) */
+.chat-button .notification-badge{
+  position:absolute;
+  top: 12px;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #ef4444;
+  border: 2px solid rgba(255,255,255,.95);
+  z-index: 2;
+  animation: chatBadgePop 1.8s ease-in-out infinite;
+}
+
+@keyframes chatBadgePop{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.25); }
+}
