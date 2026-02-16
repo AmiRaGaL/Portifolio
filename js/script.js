@@ -201,11 +201,43 @@ function ensureScrollArrow() {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+function initFloatingChatWidget(){
+  const chatButton = document.getElementById('chatButton');
+  const chatPanel  = document.getElementById('chatPanel');
+  const closeChat  = document.getElementById('closeChat');
+
+  if(!chatButton || !chatPanel || !closeChat) return;
+
+  const open = () => {
+    chatPanel.classList.add('active');
+    chatPanel.setAttribute('aria-hidden','false');
+  };
+  const close = () => {
+    chatPanel.classList.remove('active');
+    chatPanel.setAttribute('aria-hidden','true');
+  };
+
+  chatButton.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); open(); });
+  closeChat.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); close(); });
+
+  document.addEventListener('click', (e)=>{
+    if(chatPanel.classList.contains('active') &&
+       !chatPanel.contains(e.target) &&
+       !chatButton.contains(e.target)) close();
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') close();
+  });
+}
+
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", ()=>{
   initTheme();
   ensureScrollArrow();
   bindChatOnce(document);
+  initFloatingChatWidget();
 
   const mo = new MutationObserver(()=>{ if(!bound) bindChatOnce(document); });
   mo.observe(document.documentElement, { childList:true, subtree:true });

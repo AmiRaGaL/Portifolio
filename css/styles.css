@@ -358,13 +358,13 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
 /* Scroll-to-top arrow */
 #scroll-arrow {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 50;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1500;
   width: 44px;
   height: 44px;
   border-radius: 9999px;
-  display: none;
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-color);
@@ -373,26 +373,31 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
   box-shadow: 0 6px 16px rgba(0,0,0,.12);
   cursor: pointer;
   user-select: none;
+  transition: transform 0.3s ease;
 }
-#scroll-arrow.show { display: flex; }
-#scroll-arrow:hover { transform: translateY(-2px); }
+
+/* Show arrow when it has the 'show' class */
+#scroll-arrow.show {
+  display: flex;
+}
+
+#scroll-arrow:hover {
+  transform: translateY(-2px);
+}
+
 #scroll-arrow:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
-/* =============================
-   Floating Chat Widget
-   ============================= */
-
+/* Floating Chat Widget - positioned higher to avoid arrow */
 .chat-widget {
   position: fixed;
-  bottom: 20px;
+  bottom: 90px; /* Moved up from 20px to avoid arrow */
   right: 20px;
   z-index: 2000;
 }
 
-/* Floating Button */
 .chat-button {
   width: 64px;
   height: 64px;
@@ -430,7 +435,7 @@ html, body, .section, .card, .btn-primary, .btn-secondary, textarea, pre, .statu
 /* Chat Panel */
 .chat-panel {
   position: fixed;
-  bottom: 100px;
+  bottom: 170px; /* Adjusted to align with new chat button position */
   right: 20px;
   width: 400px;
   height: 600px;
@@ -528,18 +533,27 @@ body.dark-theme .chat-panel {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .chat-widget {
+    bottom: 80px; /* Adjusted for mobile */
+    right: 15px;
+  }
+  
   .chat-panel {
     width: calc(100vw - 40px);
     height: 70vh;
     max-height: 600px;
     right: 20px;
-    bottom: 90px;
+    bottom: 150px; /* Adjusted */
   }
   
   .chat-button {
     width: 60px;
     height: 60px;
-    bottom: 20px;
+  }
+
+  #scroll-arrow {
+    right: 1rem;
+    bottom: 1rem;
   }
 
   .chat-header {
@@ -556,27 +570,39 @@ body.dark-theme .chat-panel {
 }
 
 @media (max-width: 480px) {
+  .chat-widget {
+    bottom: 70px;
+    right: 10px;
+  }
+  
   .chat-panel {
     width: calc(100vw - 20px);
-    height: calc(100vh - 120px);
+    height: calc(100vh - 160px);
     right: 10px;
-    bottom: 80px;
+    bottom: 140px;
     border-radius: 12px;
   }
 
   .chat-button {
     width: 56px;
     height: 56px;
-    right: 15px;
-    bottom: 15px;
+  }
+  
+  #scroll-arrow {
+    right: 0.75rem;
+    bottom: 0.75rem;
   }
 }
 
-/* Ensure chat widget is above other elements */
+/* Ensure proper z-index stacking */
 #backToTop {
-  z-index: 1500;
+  z-index: 1000;
 }
 
 #scroll-arrow {
   z-index: 1500;
+}
+
+.chat-widget {
+  z-index: 2000;
 }

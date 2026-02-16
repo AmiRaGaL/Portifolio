@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            background: var(--surface-color);
+            color: var(--text-color);
+            padding: 1rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Light theme (default) */
+        :root {
+            --primary-color: #9b6b43;
+            --secondary-color: #c48c56;
+            --surface-color: #fffaf5;
+            --text-color: #2e2a25;
+            --border-color: #ded5c8;
+            --muted-color: #6d645c;
+        }
+        
+        /* Dark theme via media query */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #a6785a;
+                --secondary-color: #e0b37a;
+                --surface-color: #27241f;
+                --text-color: #f2ede6;
+                --border-color: #3a352f;
+                --muted-color: #a39a8d;
+            }
+        }
+        
+        /* Support parent's dark theme class */
+        body.dark-theme {
+            --primary-color: #a6785a;
+            --secondary-color: #e0b37a;
+            --surface-color: #27241f;
+            --text-color: #f2ede6;
+            --border-color: #3a352f;
+            --muted-color: #a39a8d;
+        }
+        
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 1rem;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            opacity: 0.75;
+            align-self: flex-start;
+        }
+        
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fbbf24;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        .chat-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: var(--surface-color);
+            color: var(--text-color);
+            min-height: 80px;
+            max-height: 150px;
+            transition: border-color 0.2s;
+        }
+        
+        textarea::placeholder {
+            color: var(--muted-color);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(155, 107, 67, 0.12);
+        }
+        
+        .chat-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+        
+        .chat-output {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--surface-color);
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: var(--text-color);
+            min-height: 200px;
+        }
+        
+        .chat-output:empty::before {
+            content: "Ask me anything about Deva's skills, projects, or experience...";
+            color: var(--muted-color);
+            font-style: italic;
+        }
+        
+        /* Custom scrollbar */
+        .chat-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-output::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chat-output::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .chat-output::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-color);
+        }
+        
+        .error-box {
+            margin: 0.5rem 0;
+            padding: 0.6rem;
+            border: 1px solid #dc2626;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .hint {
+            font-size: 0.75rem;
+            color: var(--muted-color);
+            margin-left: auto;
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="status-badge">
+            <span class="dot"></span>
+            Context-augmented AI
+        </div>
+        
+        <form id="chat-form" class="chat-form" onsubmit="return false;" autocomplete="off">
+            <textarea 
+                id="prompt" 
+                placeholder="e.g., What are Deva's key technical skills?"
+                rows="3"
+            ></textarea>
+            
+            <div class="chat-actions">
+                <button type="submit" id="send-btn" class="btn-primary">Send</button>
+                <button type="button" id="clear-chat" class="btn-secondary">Clear</button>
+                <span class="hint">Ctrl + Enter</span>
+            </div>
+        </form>
+        
+        <div id="answer" class="chat-output"></div>
+    </div>
+    
+    <script type="module">
+        import { chatGroq } from '/js/groq.js';
+        
+        function log(...args) { 
+            console.debug('[ChatWidget]', ...args); 
+        }
+        
+        function showError(msg) {
+            let box = document.getElementById('ai-error-box');
+            if (!msg) {
+                if (box) box.remove();
+                return;
+            }
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'ai-error-box';
+                box.className = 'error-box';
+                const output = document.getElementById('answer');
+                output.parentNode.insertBefore(box, output);
+            }
+            box.textContent = msg;
+        }
+        
+        // Scoring function for context retrieval
+        function score(query, qaArray) {
+            const terms = new Set(
+                String(query).toLowerCase().split(/\W+/).filter(Boolean)
+            );
+            return qaArray.map(item => {
+                const haystack = (item.q + ' ' + item.a).toLowerCase();
+                let score = 0;
+                for (const term of terms) {
+                    if (haystack.includes(term)) score++;
+                }
+                return { ...item, _score: score };
+            })
+            .sort((a, b) => b._score - a._score)
+            .slice(0, 5);
+        }
+        
+        // Fetch resume context
+        async function getResumeContext(query) {
+            try {
+                const response = await fetch('/assets/resume_qa.json', { 
+                    cache: 'no-store' 
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const kb = await response.json();
+                const topMatches = score(query, kb.qa);
+                
+                return [
+                    `NAME: ${kb.profile.name}`,
+                    `SUMMARY: ${kb.profile.summary}`,
+                    `HIGHLIGHTS: ${kb.highlights.join(' | ')}`,
+                    `RELEVANT QA: ${topMatches.map(x => `Q:${x.q} A:${x.a}`).join(' | ')}`
+                ].join('\n');
+            } catch (error) {
+                showError(`Failed to load knowledge base: ${error.message}`);
+                return '';
+            }
+        }
+        
+        // Main AI function
+        async function askResumeAI(userPrompt, onToken) {
+            const context = await getResumeContext(userPrompt);
+            
+            const systemPrompt = `You are Deva Sai Kumar Bheesetti's AI assistant for visitors of his portfolio.
+Speak as the assistant ("I") and refer to Deva by name ("Deva").
+Answer using ONLY the provided context below. If the information isn't in the context, politely say you don't have that detail and suggest asking about his skills, projects, experience, education, or certifications.
+Be concise (1-4 sentences). Preserve exact metrics, titles, and technical terms.
+
+--- CONTEXT START ---
+${context}
+--- CONTEXT END ---`;
+            
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ];
+            
+            log('Sending request to AI');
+            return chatGroq(JSON.stringify(messages), onToken);
+        }
+        
+        // DOM elements
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('prompt');
+        const output = document.getElementById('answer');
+        const submitBtn = document.getElementById('send-btn');
+        const clearBtn = document.getElementById('clear-chat');
+        
+        // Handle form submission
+        async function handleSubmit(event) {
+            event?.preventDefault();
+            event?.stopPropagation();
+            
+            const prompt = input.value.trim();
+            if (!prompt) {
+                input.focus();
+                return;
+            }
+            
+            showError('');
+            output.textContent = '';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> Thinking...';
+            
+            try {
+                await askResumeAI(prompt, (token) => {
+                    output.textContent += token;
+                    output.scrollTop = output.scrollHeight;
+                });
+                
+                // Log the conversation
+                fetch('/api/save-log', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        answer: output.textContent,
+                        model: 'default',
+                        meta: { 
+                            source: 'floating-widget',
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                }).catch(() => {
+                    // Silent fail for logging
+                });
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                showError(`Error: ${error.message}`);
+                output.textContent = `❌ Sorry, something went wrong: ${error.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send';
+            }
+        }
+        
+        // Event listeners
+        form.addEventListener('submit', handleSubmit);
+        submitBtn.addEventListener('click', handleSubmit);
+        
+        // Keyboard shortcut: Ctrl/Cmd + Enter
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                handleSubmit(e);
+            }
+        });
+        
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            showError('');
+            output.textContent = '';
+            input.value = '';
+            input.focus();
+        });
+        
+        // Sync theme with parent (if in iframe)
+        function syncTheme() {
+            try {
+                const parentDark = window.parent.document.body.classList.contains('dark-theme');
+                document.body.classList.toggle('dark-theme', parentDark);
+            } catch (e) {
+                // Cross-origin restriction, use media query
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.classList.toggle('dark-theme', prefersDark);
+            }
+        }
+        
+        syncTheme();
+        setInterval(syncTheme, 1000); // Sync every second
+        
+        // Initial focus
+        input.focus();
+        
+        log('Chat widget initialized (Ctrl+Enter to send)');
+    </script>
+</body>
+</html>
